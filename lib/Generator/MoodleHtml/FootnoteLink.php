@@ -8,10 +8,10 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
-class FootnoteLink extends AbstractInlineGenerator implements \WikiRenderer\Generator\InlineFootnotelinkInterface
-{
+class FootnoteLink extends AbstractInlineGenerator implements \WikiRenderer\Generator\InlineFootnotelinkInterface {
     protected $supportedAttributes = array('number');
 
     /**
@@ -35,15 +35,13 @@ class FootnoteLink extends AbstractInlineGenerator implements \WikiRenderer\Gene
         return $html;
     }
 
-    public function generate()
-    {
+    public function generate() {
         if (isset($this->attributes['number'])) {
             $number = $this->attributes['number'];
-        }
-        else {
+        } else {
             $number = $this->footnotes->addFootnote($this);
         }
-        list($id , $revid ) = $this->footnotes->getLinkId($number);
+        list($id, $revid) = $this->footnotes->getLinkId($number);
         return "<span class=\"footnote-ref\">[<a href=\"#$id\" name=\"$revid\" id=\"$revid\">$number</a>]</span>";
     }
 }

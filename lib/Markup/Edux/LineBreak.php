@@ -10,21 +10,19 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Markup\Edux;
 
-class LineBreak extends \WikiRenderer\SimpleTag\AbstractSimpleTag
-{
+class LineBreak extends \WikiRenderer\SimpleTag\AbstractSimpleTag {
     protected $tag = '\\\\ ';
 
     protected $regexpSubPattern = '\\\\\\\(?: |$)';
 
-    public function getPossibleTags()
-    {
+    public function getPossibleTags() {
         return array('\\\\ ', '\\\\');
     }
 
-    public function getContent(\WikiRenderer\Generator\DocumentGeneratorInterface $documentGenerator, $token)
-    {
+    public function getContent(\WikiRenderer\Generator\DocumentGeneratorInterface $documentGenerator, $token) {
         return $documentGenerator->getInlineGenerator('linebreak');
     }
 }

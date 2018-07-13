@@ -1,10 +1,9 @@
 {
-  "require" : {
+  "require": {
     "jelix/wikirenderer": "dev-master",
     "splitbrain/php-archive": "*"
   },
-  "autoload":
-  {
+  "autoload": {
     "psr-4": {
       "Markup\\Edux\\": "lib/Markup/Edux/",
       "Generator\\MoodleHtml\\": "lib/Generator/MoodleHtml/"

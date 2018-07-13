@@ -46,18 +46,17 @@ $wr = new \WikiRenderer\Renderer($generator, $markupConfig);
 // generate HTML content
 $html = $wr->render('');
 
-$fs=get_file_storage();
+$fs = get_file_storage();
 
-$id = optional_param('id',20,PARAM_INT);
-$context= context_course::instance($id);
-$files=$fs->get_area_tree($context->id,'format_wiki','wiki',0);
-$files=$files;
+$id = optional_param('id', 20, PARAM_INT);
+$context = context_course::instance($id);
+$files = $fs->get_area_tree($context->id, 'format_wiki', 'wiki', 0);
+$files = $files;
 
-
-$reflection=new ReflectionClass(moodle_page::class);
+$reflection = new ReflectionClass(moodle_page::class);
 $reflectionProperty = $reflection->getProperty('_flatnav');
 $reflectionProperty->setAccessible(true);
-$nav=new \theme_ctufeet\flat_navigation_ext($PAGE);
+$nav = new \theme_ctufeet\flat_navigation_ext($PAGE);
 $nav->initialise();
 $reflectionProperty->setValue($PAGE, $nav);
 

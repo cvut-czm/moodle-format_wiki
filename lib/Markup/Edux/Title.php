@@ -10,24 +10,23 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Markup\Edux;
 
 /**
  * Parse a title block.
  */
-class Title extends \WikiRenderer\Block
-{
+class Title extends \WikiRenderer\Block {
     public $type = 'title';
     protected $regexp = "/^\s*(\=+)\s*([^=]+)\s*(\=+)\s*$/";
     protected $_closeNow = true;
 
-    public function validateLine()
-    {
+    public function validateLine() {
         $level = strlen($this->_detectMatch[1]);
         $h = 6 - $level + $this->engine->getConfig()->startHeaderNumber;
         if ($h > 6) {
             $h = 6;
-        } elseif ($h < 1) {
+        } else if ($h < 1) {
             $h = 1;
         }
         $this->generator->setLevel($h);

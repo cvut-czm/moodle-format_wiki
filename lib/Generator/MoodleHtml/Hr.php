@@ -8,29 +8,26 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
-class Hr implements \WikiRenderer\Generator\BlockGeneratorInterface
-{
+class Hr implements \WikiRenderer\Generator\BlockGeneratorInterface {
     protected $id = '';
 
     public function __construct(\WikiRenderer\Generator\Config $config) {
     }
 
-    public function setId($id)
-    {
+    public function setId($id) {
         $this->id = $id;
     }
 
-    public function isEmpty()
-    {
+    public function isEmpty() {
         return false;
     }
 
-    public function generate()
-    {
+    public function generate() {
         if ($this->id) {
-            return '<hr id="'.htmlspecialchars($this->id).'"/>';
+            return '<hr id="' . htmlspecialchars($this->id) . '"/>';
         } else {
             return '<hr />';
         }

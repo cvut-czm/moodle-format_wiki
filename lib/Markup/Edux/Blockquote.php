@@ -10,13 +10,13 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Markup\Edux;
 
 /**
  * Parse blockquote block.
  */
-class Blockquote extends \WikiRenderer\Block
-{
+class Blockquote extends \WikiRenderer\Block {
     public $type = 'blockquote';
     protected $regexp = "/^\s*(\>+)\s*(.*)/";
 
@@ -29,8 +29,7 @@ class Blockquote extends \WikiRenderer\Block
     protected $_previousTag = '';
     protected $_firstTagLen = 0;
 
-    public function open()
-    {
+    public function open() {
         $this->_previousTag = $this->_detectMatch[1];
         $this->_firstTagLen = strlen($this->_previousTag);
         $this->_firstLine = true;
@@ -46,15 +45,13 @@ class Blockquote extends \WikiRenderer\Block
         }
     }
 
-    public function close($reason)
-    {
+    public function close($reason) {
         $this->generatorStack = null;
 
         return parent::close($reason);
     }
 
-    public function validateLine()
-    {
+    public function validateLine() {
         $d = strlen($this->_previousTag) - strlen($this->_detectMatch[1]);
 
         if ($d > 0) { // we pop off the list of nested blockquote
@@ -62,7 +59,7 @@ class Blockquote extends \WikiRenderer\Block
                 $this->generatorStack->pop();
             }
             $this->_previousTag = $this->_detectMatch[1];
-        } elseif ($d < 0) { // we have an other nested blockquote 
+        } else if ($d < 0) { // we have an other nested blockquote
             $this->_previousTag = $this->_detectMatch[1];
             for ($i = 0; $i < -$d; ++$i) {
                 $generator = $this->documentGenerator->getBlockGenerator('blockquote');

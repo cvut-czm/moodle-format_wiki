@@ -8,10 +8,10 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
-class Quote extends AbstractInlineGenerator
-{
+class Quote extends AbstractInlineGenerator {
     protected $htmlTagName = 'q';
 
     protected $supportedAttributes = array('id', 'lang', 'cite');

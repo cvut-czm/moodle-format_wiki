@@ -10,18 +10,17 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Markup\Edux;
 
 /**
  * Parser for file content.
  */
-class Html extends NoWiki
-{
+class Html extends NoWiki {
     public $type = 'html';
     protected $tagName = 'html';
 
-    public function validateLine()
-    {
+    public function validateLine() {
         $this->generator->addLine($this->_detectMatch);
     }
 }

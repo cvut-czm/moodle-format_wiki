@@ -2,7 +2,7 @@
 
 /**
  * DokuWiki syntax.
- * 
+ *
  * @author Laurent Jouanneau
  * @copyright 2016 Laurent Jouanneau
  *
@@ -10,13 +10,13 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Markup\Edux;
 
 /**
  * Parse a line of a table.
  */
-class TableRow extends \WikiRenderer\InlineTagWithSeparator
-{
+class TableRow extends \WikiRenderer\InlineTagWithSeparator {
     protected $generatorName = 'tablecell';
     protected $isTextLineTag = true;
     protected $attribute = array('$$');
@@ -29,20 +29,16 @@ class TableRow extends \WikiRenderer\InlineTagWithSeparator
 
     protected $cell = array();
 
-    public function __construct(\WikiRenderer\Config $config, \WikiRenderer\Generator\DocumentGeneratorInterface $generator)
-    {
+    public function __construct(\WikiRenderer\Config $config, \WikiRenderer\Generator\DocumentGeneratorInterface $generator) {
         parent::__construct($config, $generator);
         $this->row = new \WikiRenderer\Generator\InlineBagGenerator($generator->getConfig());
     }
 
-    public function isCurrentSeparator($token)
-    {
+    public function isCurrentSeparator($token) {
         return ($token == '|' || $token == '^');
     }
 
-
-    public function addContentString($wikiContent)
-    {
+    public function addContentString($wikiContent) {
         if ($wikiContent === '') {
             return;
         }
@@ -56,8 +52,7 @@ class TableRow extends \WikiRenderer\InlineTagWithSeparator
         $this->generator->addContent($parsedContent);
     }
 
-    public function addContentGenerator($wikiContent, \WikiRenderer\Generator\InlineGeneratorInterface $childGenerator)
-    {
+    public function addContentGenerator($wikiContent, \WikiRenderer\Generator\InlineGeneratorInterface $childGenerator) {
         if ($wikiContent === '') {
             return;
         }
@@ -70,10 +65,10 @@ class TableRow extends \WikiRenderer\InlineTagWithSeparator
 
     /**
      * called by the inline parser, when it found a separator.
+     *
      * @param string $token
      */
-    public function addSeparator($token)
-    {
+    public function addSeparator($token) {
         $cellContent = $this->wikiContentArr[$this->separatorCount];
         if ($cellContent === '') {
             if ($this->previousGenerator) {
@@ -81,13 +76,13 @@ class TableRow extends \WikiRenderer\InlineTagWithSeparator
             }
         } else {
             if (preg_match('/^\s\s/', $cellContent) &&
-                preg_match('/\s\s$/', $cellContent)) {
+                    preg_match('/\s\s$/', $cellContent)) {
                 if (trim($cellContent) != '') {
                     $this->generator->setAlign('center');
                 }
-            } elseif (preg_match('/^\s\s/', $cellContent)) {
+            } else if (preg_match('/^\s\s/', $cellContent)) {
                 $this->generator->setAlign('right');
-            } elseif (preg_match('/\s\s$/', $cellContent) && preg_match('/^\S/', $cellContent)) {
+            } else if (preg_match('/\s\s$/', $cellContent) && preg_match('/^\S/', $cellContent)) {
                 $this->generator->setAlign('left');
             }
             $this->row->addGenerator($this->generator);
@@ -105,8 +100,7 @@ class TableRow extends \WikiRenderer\InlineTagWithSeparator
         $this->wikiContent .= $token;
     }
 
-    public function getContent()
-    {
+    public function getContent() {
         // don't add the "pseudo" cell which is after the last separator
         if (!$this->generator->isEmpty()) {
             $this->row->addGenerator($this->generator);
@@ -115,13 +109,11 @@ class TableRow extends \WikiRenderer\InlineTagWithSeparator
         return $this->row;
     }
 
-    public function isOtherTagAllowed()
-    {
+    public function isOtherTagAllowed() {
         return true;
     }
 
-    public function __clone()
-    {
+    public function __clone() {
         $this->generator = clone $this->generator;
         $this->row = clone $this->row;
     }

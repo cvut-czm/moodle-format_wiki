@@ -8,9 +8,9 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
-class Variable extends AbstractInlineGenerator
-{
+class Variable extends AbstractInlineGenerator {
     protected $htmlTagName = 'var';
 }

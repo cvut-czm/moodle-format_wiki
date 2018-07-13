@@ -86,8 +86,8 @@ class format_wiki extends format_base {
         return $node;
     }
 
-    private $ignore_list_file =[
-      'sidebar'
+    private $ignore_list_file = [
+            'sidebar'
     ];
     private $ignore_list_folder =
             [
@@ -103,8 +103,9 @@ class format_wiki extends format_base {
     private function recursion(flat_navigation $flat_navigation, $tree, $path, $parent, int $indent = 0, $hidden = true,
             $append = '') {
         foreach ($tree['subdirs'] as $subdir) {
-            if(in_array($subdir['dirname'],$this->ignore_list_folder))
+            if (in_array($subdir['dirname'], $this->ignore_list_folder)) {
                 continue;
+            }
             $files = count($subdir['files']);
             $subdirs = count($subdir['subdirs']);
             if ($files == 1 && $subdirs == 0) {
@@ -139,8 +140,9 @@ class format_wiki extends format_base {
         }
         foreach ($tree['files'] as $name => $file) {
 
-            if(in_array($name,$this->ignore_list_file))
+            if (in_array($name, $this->ignore_list_file)) {
                 continue;
+            }
             $flat_navigation->add($this->node_create_for_file($append . $name, $path, $indent, $parent, $hidden));
         }
 

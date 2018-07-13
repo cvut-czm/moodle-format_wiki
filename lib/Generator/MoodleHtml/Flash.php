@@ -8,31 +8,30 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
-class Flash extends AbstractInlineGenerator
-{
+class Flash extends AbstractInlineGenerator {
     protected $htmlTagName = 'object';
 
     protected $supportedAttributes = array('id', 'src', 'width', 'height', 'align', 'title', 'class');
 
-    public function generate()
-    {
-        $attrs = ' data="'.htmlspecialchars($this->getAttribute('src')).'"';
+    public function generate() {
+        $attrs = ' data="' . htmlspecialchars($this->getAttribute('src')) . '"';
 
         foreach (array('id', 'title', 'class', 'width', 'height') as $attr) {
             $val = $this->getAttribute($attr);
             if ($val) {
-                $attrs .= ' '.$attr.'="'.htmlspecialchars($val).'"';
+                $attrs .= ' ' . $attr . '="' . htmlspecialchars($val) . '"';
             }
         }
 
         $align = $this->getAttribute('align');
         if ($align) {
-            $attrs .= ' style="float:'.htmlspecialchars($align).';"';
+            $attrs .= ' style="float:' . htmlspecialchars($align) . ';"';
         }
 
-        return '<'.$this->htmlTagName.$attrs.' type="application/vnd.adobe.flash-movie">'.
-            '<p>Flash content cannot be loaded</p></'.$this->htmlTagName.'>';
+        return '<' . $this->htmlTagName . $attrs . ' type="application/vnd.adobe.flash-movie">' .
+                '<p>Flash content cannot be loaded</p></' . $this->htmlTagName . '>';
     }
 }

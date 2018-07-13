@@ -8,23 +8,21 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
-class LineBreak implements \WikiRenderer\Generator\InlineGeneratorInterface
-{
+class LineBreak implements \WikiRenderer\Generator\InlineGeneratorInterface {
     public function __construct(\WikiRenderer\Generator\Config $config) {
     }
 
-    public function isEmpty()
-    {
+    public function isEmpty() {
         return false;
     }
 
     /**
      * @return string
      */
-    public function generate()
-    {
+    public function generate() {
         return '<br />';
     }
 }

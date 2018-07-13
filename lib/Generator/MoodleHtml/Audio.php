@@ -8,30 +8,29 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
-class Audio extends AbstractInlineGenerator
-{
+class Audio extends AbstractInlineGenerator {
     protected $htmlTagName = 'audio';
 
     protected $supportedAttributes = array('id', 'src', 'align', 'title', 'class');
 
-    public function generate()
-    {
-        $attrs = ' src="'.htmlspecialchars($this->getAttribute('src')).'"';
+    public function generate() {
+        $attrs = ' src="' . htmlspecialchars($this->getAttribute('src')) . '"';
 
         foreach (array('id', 'title', 'class') as $attr) {
             $val = $this->getAttribute($attr);
             if ($val) {
-                $attrs .= ' '.$attr.'="'.htmlspecialchars($val).'"';
+                $attrs .= ' ' . $attr . '="' . htmlspecialchars($val) . '"';
             }
         }
 
         $align = $this->getAttribute('align');
         if ($align) {
-            $attrs .= ' style="float:'.htmlspecialchars($align).';"';
+            $attrs .= ' style="float:' . htmlspecialchars($align) . ';"';
         }
 
-        return '<'.$this->htmlTagName.$attrs.' controls="true"/>';
+        return '<' . $this->htmlTagName . $attrs . ' controls="true"/>';
     }
 }

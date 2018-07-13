@@ -8,11 +8,11 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
 class TableCell implements \WikiRenderer\Generator\BlockTableCellInterface,
-                           \WikiRenderer\Generator\InlineGeneratorInterface
-{
+        \WikiRenderer\Generator\InlineGeneratorInterface {
     protected $htmlTagName = 'td';
 
     protected $id = '';
@@ -30,64 +30,53 @@ class TableCell implements \WikiRenderer\Generator\BlockTableCellInterface,
     public function __construct(\WikiRenderer\Generator\Config $config) {
     }
 
-    public function setId($id)
-    {
+    public function setId($id) {
         $this->id = $id;
     }
 
-    public function setIsHeader($isHeader)
-    {
+    public function setIsHeader($isHeader) {
         $this->_isHeader = !!$isHeader;
     }
 
-    public function setColSpan($colspan)
-    {
+    public function setColSpan($colspan) {
         $this->_colspan = intval($colspan);
     }
 
-    public function getColSpan()
-    {
+    public function getColSpan() {
         return $this->_colspan;
     }
 
-    public function setRowSpan($rowspan)
-    {
+    public function setRowSpan($rowspan) {
         $this->_rowspan = intval($rowspan);
     }
 
-    public function getRowSpan()
-    {
+    public function getRowSpan() {
         return $this->_rowspan;
     }
 
-    public function setAlign($align)
-    {
+    public function setAlign($align) {
         if (!in_array($align, array('left', 'center', 'right'))) {
             return;
         }
         $this->align = $align;
     }
 
-    public function getAlign()
-    {
+    public function getAlign() {
         return $this->align;
     }
 
-    public function addContent(\WikiRenderer\Generator\GeneratorInterface $content)
-    {
+    public function addContent(\WikiRenderer\Generator\GeneratorInterface $content) {
         $this->content[] = $content;
     }
 
-    public function isEmpty()
-    {
+    public function isEmpty() {
         return count($this->content) == 0;
     }
 
     /**
      * @return string
      */
-    public function generate()
-    {
+    public function generate() {
         $tag = $this->htmlTagName;
         if ($this->_isHeader) {
             $tag = 'th';
@@ -95,30 +84,30 @@ class TableCell implements \WikiRenderer\Generator\BlockTableCellInterface,
 
         $attr = '';
         if ($this->id) {
-            $attr .= ' id="'.htmlspecialchars($this->id).'"';
+            $attr .= ' id="' . htmlspecialchars($this->id) . '"';
         }
 
         if ($this->_colspan > 1) {
-            $attr .= ' colspan="'.$this->_colspan.'"';
+            $attr .= ' colspan="' . $this->_colspan . '"';
         }
 
         if ($this->_rowspan > 1) {
-            $attr .= ' rowspan="'.$this->_rowspan.'"';
+            $attr .= ' rowspan="' . $this->_rowspan . '"';
         }
 
         if ($this->align) {
-            $attr .= ' align="'.$this->align.'"';
+            $attr .= ' align="' . $this->align . '"';
         }
 
         $html = '';
         foreach ($this->content as $generator) {
             if ($generator instanceof \WikiRenderer\Generator\BlockGeneratorInterface) {
-                $html .= "\n".$generator->generate()."\n";
+                $html .= "\n" . $generator->generate() . "\n";
             } else {
                 $html .= $generator->generate();
             }
         }
 
-        return '<'.$tag.$attr.'>'.$html.'</'.$tag.'>';
+        return '<' . $tag . $attr . '>' . $html . '</' . $tag . '>';
     }
 }

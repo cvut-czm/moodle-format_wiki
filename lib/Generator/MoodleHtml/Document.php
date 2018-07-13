@@ -9,8 +9,8 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
-class Document extends \WikiRenderer\Generator\AbstractDocumentGenerator
-{
+class Document extends \WikiRenderer\Generator\AbstractDocumentGenerator {
 }

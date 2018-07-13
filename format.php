@@ -33,7 +33,7 @@ $context = context_course::instance($id);
 $parts = explode('_', $page);
 $fs = get_file_storage();
 
-function parse($parts, $context) : stored_file {
+function parse($parts, $context): stored_file {
     $fs = get_file_storage();
     $tree = $fs->get_area_tree($context->id, 'format_wiki', 'wiki', 0);
     $tree = $tree['subdirs']['pages'];
@@ -62,9 +62,9 @@ function parse($parts, $context) : stored_file {
         $c++;
     }
 }
-$file=parse($parts,$context);
-$markupConfig = new  Markup\Edux\Config($context,(new moodle_url('/course/view.php',['id'=>$id])).'&page=%s');
 
+$file = parse($parts, $context);
+$markupConfig = new  Markup\Edux\Config($context, (new moodle_url('/course/view.php', ['id' => $id])) . '&page=%s');
 
 // then choose a generator, e.g., the object which generates
 // the result text in the expected format. Here, HTML...
@@ -72,10 +72,8 @@ $genConfig = new \Generator\MoodleHtml\Config();
 
 $generator = new \Generator\MoodleHtml\Document($genConfig);
 
-
 // now instancy the WikiRenderer engine
 $wr = new \WikiRenderer\Renderer($generator, $markupConfig);
-
 
 echo '<div class="d-flex flex-row-reverse">';
 echo '<a class="btn btn-outline-primary ml-2" href="#">Revize</a>';

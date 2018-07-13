@@ -26,29 +26,29 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname']='Wiki format';
-$string['pagefile']='Page file';
-$string['mediafile']='Media file';
-$string['overwrite_files']='Overwrite files';
-$string['delete_old_wiki']='Delete old wiki';
+$string['pluginname'] = 'Wiki format';
+$string['pagefile'] = 'Page file';
+$string['mediafile'] = 'Media file';
+$string['overwrite_files'] = 'Overwrite files';
+$string['delete_old_wiki'] = 'Delete old wiki';
 
-$string['create:page']='Create new page';
-$string['create:folder']='Create new folder';
+$string['create:page'] = 'Create new page';
+$string['create:folder'] = 'Create new folder';
 
-$string['wiki:lectures']='Lectures';
-$string['wiki:labs']='Labs';
-$string['wiki:annotation']='Annotation';
-$string['wiki:av']='Audio/Video';
-$string['wiki:en']='English';
-$string['wiki:news']='News';
-$string['wiki:parttime']='Part-time';
-$string['wiki:private']='Private folder';
-$string['wiki:teacher']='Teachers';
-$string['wiki:team']='Teams';
-$string['wiki:tutorials']='Tutorials';
-$string['wiki:seminars']='Seminars';
-$string['wiki:wiki']='Wiki';
-$string['wiki:start']='Index';
-$string['wiki:solutions']='Index';
-$string['wiki:funding']='Funding';
-$string['wiki:playground']='Playground';
+$string['wiki:lectures'] = 'Lectures';
+$string['wiki:labs'] = 'Labs';
+$string['wiki:annotation'] = 'Annotation';
+$string['wiki:av'] = 'Audio/Video';
+$string['wiki:en'] = 'English';
+$string['wiki:news'] = 'News';
+$string['wiki:parttime'] = 'Part-time';
+$string['wiki:private'] = 'Private folder';
+$string['wiki:teacher'] = 'Teachers';
+$string['wiki:team'] = 'Teams';
+$string['wiki:tutorials'] = 'Tutorials';
+$string['wiki:seminars'] = 'Seminars';
+$string['wiki:wiki'] = 'Wiki';
+$string['wiki:start'] = 'Index';
+$string['wiki:solutions'] = 'Index';
+$string['wiki:funding'] = 'Funding';
+$string['wiki:playground'] = 'Playground';

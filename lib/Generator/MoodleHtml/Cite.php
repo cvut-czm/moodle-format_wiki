@@ -8,10 +8,10 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
-class Cite extends AbstractInlineGenerator
-{
+class Cite extends AbstractInlineGenerator {
     protected $htmlTagName = 'cite';
 
     protected $supportedAttributes = array('id', 'title');

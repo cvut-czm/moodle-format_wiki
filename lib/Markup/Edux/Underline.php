@@ -10,13 +10,13 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Markup\Edux;
 
 /**
  * Parser for underline inline tag.
  */
-class Underline extends \WikiRenderer\InlineTag
-{
+class Underline extends \WikiRenderer\InlineTag {
     protected $name = 'u';
     protected $generatorName = 'underline';
     protected $beginTag = '__';

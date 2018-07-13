@@ -8,10 +8,10 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
-class Html implements \WikiRenderer\Generator\BlockOfRawLinesInterface
-{
+class Html implements \WikiRenderer\Generator\BlockOfRawLinesInterface {
     protected $htmlTagName = 'div';
 
     protected $lines = array();
@@ -24,34 +24,29 @@ class Html implements \WikiRenderer\Generator\BlockOfRawLinesInterface
         }
     }
 
-    public function setId($id)
-    {
+    public function setId($id) {
         $this->id = $id;
     }
 
     /**
      * @param string $content
      */
-    public function addLine($content)
-    {
+    public function addLine($content) {
         $this->lines[] = $content;
     }
 
-    public function isEmpty()
-    {
+    public function isEmpty() {
         return count($this->lines) == 0;
     }
 
-    public function generate()
-    {
+    public function generate() {
         if ($this->htmlTagName) {
             if ($this->id) {
-                $text = '<'.$this->htmlTagName.' id="'.htmlspecialchars($this->id).'">';
+                $text = '<' . $this->htmlTagName . ' id="' . htmlspecialchars($this->id) . '">';
             } else {
-                $text = '<'.$this->htmlTagName.'>';
+                $text = '<' . $this->htmlTagName . '>';
             }
-        }
-        else {
+        } else {
             $text = '';
         }
 

@@ -8,9 +8,9 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
-class Underline extends AbstractInlineGenerator
-{
+class Underline extends AbstractInlineGenerator {
     protected $htmlTagName = 'u';
 }

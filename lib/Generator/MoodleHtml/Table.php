@@ -8,14 +8,13 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
 use WikiRenderer\Generator\BlockTableInterface;
 use WikiRenderer\Generator\BlockTableCellInterface;
 
-
-class Table implements BlockTableInterface
-{
+class Table implements BlockTableInterface {
     /**
      * @var BlockTableCellInterface[][]
      */
@@ -28,19 +27,16 @@ class Table implements BlockTableInterface
     public function __construct(\WikiRenderer\Generator\Config $config) {
     }
 
-    public function setId($id)
-    {
+    public function setId($id) {
         $this->id = $id;
     }
 
-    public function createRow()
-    {
+    public function createRow() {
         ++$this->currentRowIndex;
         $this->rows[$this->currentRowIndex] = array();
     }
 
-    public function addCell(\WikiRenderer\Generator\BlockTableCellInterface $content)
-    {
+    public function addCell(\WikiRenderer\Generator\BlockTableCellInterface $content) {
         if ($content->getRowSpan() == -1) {
             $colIdx = count($this->rows[$this->currentRowIndex]);
 
@@ -57,17 +53,15 @@ class Table implements BlockTableInterface
         $this->rows[$this->currentRowIndex][] = $content;
     }
 
-    public function isEmpty()
-    {
+    public function isEmpty() {
         return count($this->rows) == 0;
     }
 
-    public function generate()
-    {
+    public function generate() {
         if ($this->id) {
-            $text = '<table class="table table-bordered table-fit" id="'.htmlspecialchars($this->id).'">'."\n";
+            $text = '<table class="table table-bordered table-fit" id="' . htmlspecialchars($this->id) . '">' . "\n";
         } else {
-            $text = '<table class="table table-bordered table-fit">'."\n";
+            $text = '<table class="table table-bordered table-fit">' . "\n";
         }
 
         foreach ($this->rows as $k => $row) {
@@ -76,7 +70,7 @@ class Table implements BlockTableInterface
                 if ($cell->getRowSpan() < 1) {
                     continue;
                 }
-                $text .= $cell->generate()."\n";
+                $text .= $cell->generate() . "\n";
             }
             $text .= "</tr>\n";
         }

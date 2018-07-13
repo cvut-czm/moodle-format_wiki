@@ -14,12 +14,12 @@ http://creativecommons.org/publicdomain/zero/1.0/legalcode
 */
 
 // A class containing functions for computing diffs and formatting the output.
-class Diff{
+class Diff {
 
     // define the constants
     const UNMODIFIED = 0;
-    const DELETED    = 1;
-    const INSERTED   = 2;
+    const DELETED = 1;
+    const INSERTED = 2;
 
     /* Returns the diff for two strings. The return value is an array, each of
      * whose values is an array containing two values: a line (or character, if
@@ -34,16 +34,16 @@ class Diff{
      *                      lines; this optional parameter defaults to false
      */
     public static function compare(
-            $string1, $string2, $compareCharacters = false){
+            $string1, $string2, $compareCharacters = false) {
 
         // initialise the sequences and comparison start and end positions
         $start = 0;
-        if ($compareCharacters){
+        if ($compareCharacters) {
             $sequence1 = $string1;
             $sequence2 = $string2;
             $end1 = strlen($string1) - 1;
             $end2 = strlen($string2) - 1;
-        }else{
+        } else {
             $sequence1 = preg_split('/\R/', $string1);
             $sequence2 = preg_split('/\R/', $string2);
             $end1 = count($sequence1) - 1;
@@ -52,15 +52,15 @@ class Diff{
 
         // skip any common prefix
         while ($start <= $end1 && $start <= $end2
-                && $sequence1[$start] == $sequence2[$start]){
-            $start ++;
+                && $sequence1[$start] == $sequence2[$start]) {
+            $start++;
         }
 
         // skip any common suffix
         while ($end1 >= $start && $end2 >= $start
-                && $sequence1[$end1] == $sequence2[$end2]){
-            $end1 --;
-            $end2 --;
+                && $sequence1[$end1] == $sequence2[$end2]) {
+            $end1--;
+            $end2--;
         }
 
         // compute the table of longest common subsequence lengths
@@ -72,13 +72,15 @@ class Diff{
 
         // generate the full diff
         $diff = array();
-        for ($index = 0; $index < $start; $index ++){
+        for ($index = 0; $index < $start; $index++) {
             $diff[] = array($sequence1[$index], self::UNMODIFIED);
         }
-        while (count($partialDiff) > 0) $diff[] = array_pop($partialDiff);
+        while (count($partialDiff) > 0) {
+            $diff[] = array_pop($partialDiff);
+        }
         for ($index = $end1 + 1;
                 $index < ($compareCharacters ? strlen($sequence1) : count($sequence1));
-                $index ++){
+                $index++) {
             $diff[] = array($sequence1[$index], self::UNMODIFIED);
         }
 
@@ -95,7 +97,7 @@ class Diff{
      *                      lines; this optional parameter defaults to false
      */
     public static function compareFiles(
-            $file1, $file2, $compareCharacters = false){
+            $file1, $file2, $compareCharacters = false) {
 
         // return the diff of the files
         return self::compare(
@@ -115,7 +117,7 @@ class Diff{
      * $end2      - the ending index for the second sequence
      */
     private static function computeTable(
-            $sequence1, $sequence2, $start, $end1, $end2){
+            $sequence1, $sequence2, $start, $end1, $end2) {
 
         // determine the lengths to be compared
         $length1 = $end1 - $start + 1;
@@ -125,19 +127,19 @@ class Diff{
         $table = array(array_fill(0, $length2 + 1, 0));
 
         // loop over the rows
-        for ($index1 = 1; $index1 <= $length1; $index1 ++){
+        for ($index1 = 1; $index1 <= $length1; $index1++) {
 
             // create the new row
             $table[$index1] = array(0);
 
             // loop over the columns
-            for ($index2 = 1; $index2 <= $length2; $index2 ++){
+            for ($index2 = 1; $index2 <= $length2; $index2++) {
 
                 // store the longest common subsequence length
                 if ($sequence1[$index1 + $start - 1]
-                        == $sequence2[$index2 + $start - 1]){
+                        == $sequence2[$index2 + $start - 1]) {
                     $table[$index1][$index2] = $table[$index1 - 1][$index2 - 1] + 1;
-                }else{
+                } else {
                     $table[$index1][$index2] =
                             max($table[$index1 - 1][$index2], $table[$index1][$index2 - 1]);
                 }
@@ -159,7 +161,7 @@ class Diff{
      * $start     - the starting index
      */
     private static function generatePartialDiff(
-            $table, $sequence1, $sequence2, $start){
+            $table, $sequence1, $sequence2, $start) {
 
         //  initialise the diff
         $diff = array();
@@ -169,30 +171,30 @@ class Diff{
         $index2 = count($table[0]) - 1;
 
         // loop until there are no items remaining in either sequence
-        while ($index1 > 0 || $index2 > 0){
+        while ($index1 > 0 || $index2 > 0) {
 
             // check what has happened to the items at these indices
             if ($index1 > 0 && $index2 > 0
                     && $sequence1[$index1 + $start - 1]
-                    == $sequence2[$index2 + $start - 1]){
+                    == $sequence2[$index2 + $start - 1]) {
 
                 // update the diff and the indices
                 $diff[] = array($sequence1[$index1 + $start - 1], self::UNMODIFIED);
-                $index1 --;
-                $index2 --;
+                $index1--;
+                $index2--;
 
-            }elseif ($index2 > 0
-                    && $table[$index1][$index2] == $table[$index1][$index2 - 1]){
+            } else if ($index2 > 0
+                    && $table[$index1][$index2] == $table[$index1][$index2 - 1]) {
 
                 // update the diff and the indices
                 $diff[] = array($sequence2[$index2 + $start - 1], self::INSERTED);
-                $index2 --;
+                $index2--;
 
-            }else{
+            } else {
 
                 // update the diff and the indices
                 $diff[] = array($sequence1[$index1 + $start - 1], self::DELETED);
-                $index1 --;
+                $index1--;
 
             }
 
@@ -211,19 +213,25 @@ class Diff{
      * $separator - the separator between lines; this optional parameter defaults
      *              to "\n"
      */
-    public static function toString($diff, $separator = "\n"){
+    public static function toString($diff, $separator = "\n") {
 
         // initialise the string
         $string = '';
 
         // loop over the lines in the diff
-        foreach ($diff as $line){
+        foreach ($diff as $line) {
 
             // extend the string with the line
-            switch ($line[1]){
-                case self::UNMODIFIED : $string .= '  ' . $line[0];break;
-                case self::DELETED    : $string .= '- ' . $line[0];break;
-                case self::INSERTED   : $string .= '+ ' . $line[0];break;
+            switch ($line[1]) {
+                case self::UNMODIFIED :
+                    $string .= '  ' . $line[0];
+                    break;
+                case self::DELETED    :
+                    $string .= '- ' . $line[0];
+                    break;
+                case self::INSERTED   :
+                    $string .= '+ ' . $line[0];
+                    break;
             }
 
             // extend the string with the separator
@@ -244,19 +252,25 @@ class Diff{
      * $separator - the separator between lines; this optional parameter defaults
      *              to '<br>'
      */
-    public static function toHTML($diff, $separator = '<br>'){
+    public static function toHTML($diff, $separator = '<br>') {
 
         // initialise the HTML
         $html = '';
 
         // loop over the lines in the diff
-        foreach ($diff as $line){
+        foreach ($diff as $line) {
 
             // extend the HTML with the line
-            switch ($line[1]){
-                case self::UNMODIFIED : $element = 'span'; break;
-                case self::DELETED    : $element = 'del';  break;
-                case self::INSERTED   : $element = 'ins';  break;
+            switch ($line[1]) {
+                case self::UNMODIFIED :
+                    $element = 'span';
+                    break;
+                case self::DELETED    :
+                    $element = 'del';
+                    break;
+                case self::INSERTED   :
+                    $element = 'ins';
+                    break;
             }
             $html .=
                     '<' . $element . '>'
@@ -281,17 +295,17 @@ class Diff{
      * $separator   - the separator between lines; this optional parameter
      *                defaults to '<br>'
      */
-    public static function toTable($diff, $indentation = '', $separator = '<br>'){
+    public static function toTable($diff, $indentation = '', $separator = '<br>') {
 
         // initialise the HTML
         $html = $indentation . "<table class=\"diff\">\n";
 
         // loop over the lines in the diff
         $index = 0;
-        while ($index < count($diff)){
+        while ($index < count($diff)) {
 
             // determine the line type
-            switch ($diff[$index][1]){
+            switch ($diff[$index][1]) {
 
                 // display the content on the left and right
                 case self::UNMODIFIED:
@@ -361,19 +375,19 @@ class Diff{
      * $type        - the type of line
      */
     private static function getCellContent(
-            $diff, $indentation, $separator, &$index, $type){
+            $diff, $indentation, $separator, &$index, $type) {
 
         // initialise the HTML
         $html = '';
 
         // loop over the matching lines, adding them to the HTML
-        while ($index < count($diff) && $diff[$index][1] == $type){
+        while ($index < count($diff) && $diff[$index][1] == $type) {
             $html .=
                     '<span>'
                     . htmlspecialchars($diff[$index][0])
                     . '</span>'
                     . $separator;
-            $index ++;
+            $index++;
         }
 
         // return the HTML

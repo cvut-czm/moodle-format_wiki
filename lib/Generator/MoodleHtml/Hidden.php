@@ -8,13 +8,12 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
-class Hidden extends AbstractInlineGenerator
-{
+class Hidden extends AbstractInlineGenerator {
 
-    public function generate()
-    {
+    public function generate() {
         return '';
     }
 }

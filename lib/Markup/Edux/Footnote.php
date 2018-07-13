@@ -2,7 +2,7 @@
 
 /**
  * DokuWiki syntax.
- * 
+ *
  * @author Laurent Jouanneau
  * @copyright 2008-2016 Laurent Jouanneau
  *
@@ -10,20 +10,19 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Markup\Edux;
 
 /**
  * Parser for footnote inline tag.
  */
-class Footnote extends \WikiRenderer\InlineTag
-{
+class Footnote extends \WikiRenderer\InlineTag {
     protected $name = 'footnote';
     protected $generatorName = 'footnotelink';
     protected $beginTag = '((';
     protected $endTag = '))';
 
-    public function __construct(\WikiRenderer\Config $config, \WikiRenderer\Generator\DocumentGeneratorInterface $generator)
-    {
+    public function __construct(\WikiRenderer\Config $config, \WikiRenderer\Generator\DocumentGeneratorInterface $generator) {
         parent::__construct($config, $generator);
 
         $footnotes = $generator->getMetaData('footnotes');

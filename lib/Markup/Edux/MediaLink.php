@@ -30,15 +30,15 @@ namespace Markup\Edux;
 
 defined('MOODLE_INTERNAL') || die();
 
-class MediaLink  extends \WikiRenderer\InlineTagWithSeparator {
+class MediaLink extends \WikiRenderer\InlineTagWithSeparator {
     protected $name = 'a';
     protected $generatorName = 'link';
     protected $beginTag = '{{:';
     protected $endTag = '}}';
     protected $attribute = array('href', '$$');
     protected $separators = array('|');
-    public function getContent()
-    {
+
+    public function getContent() {
         $cntattr = count($this->attribute);
         $cnt = ($this->separatorCount + 1 > $cntattr) ? $cntattr : ($this->separatorCount + 1);
         list($href, $label) = $this->config->getLinkProcessor()->processMediaLink($this->wikiContentArr[0], $this->generatorName);

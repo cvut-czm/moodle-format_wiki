@@ -8,9 +8,9 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
-class Ins extends AbstractInlineGenerator
-{
+class Ins extends AbstractInlineGenerator {
     protected $htmlTagName = 'del';
 }

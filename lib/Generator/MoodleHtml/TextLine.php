@@ -8,15 +8,14 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
-class TextLine extends AbstractInlineGenerator
-{
+class TextLine extends AbstractInlineGenerator {
     /**
      * @return string
      */
-    public function generate()
-    {
+    public function generate() {
         $html = '';
         foreach ($this->content as $content) {
             $html .= $content->generate();

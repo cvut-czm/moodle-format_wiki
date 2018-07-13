@@ -10,22 +10,20 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Markup\Edux;
 
 /**
  * Parser for a paragraph block.
  */
-class P extends \WikiRenderer\Block
-{
+class P extends \WikiRenderer\Block {
     public $type = 'para';
 
-    public function isStarting($line)
-    {
+    public function isStarting($line) {
         return $this->isAccepting($line);
     }
 
-    public function isAccepting($string)
-    {
+    public function isAccepting($string) {
         if ($string == '') {
             return false;
         }
@@ -41,8 +39,7 @@ class P extends \WikiRenderer\Block
         return false;
     }
 
-    public function validateLine()
-    {
+    public function validateLine() {
         $this->generator->addLine($this->parseInlineContent($this->_detectMatch[1]));
     }
 }

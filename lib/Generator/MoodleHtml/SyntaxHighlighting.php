@@ -8,10 +8,10 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
-class SyntaxHighlighting implements \WikiRenderer\Generator\BlockSyntaxHighlightingInterface
-{
+class SyntaxHighlighting implements \WikiRenderer\Generator\BlockSyntaxHighlightingInterface {
     protected $htmlTagName = 'pre';
 
     protected $lines = array();
@@ -28,58 +28,50 @@ class SyntaxHighlighting implements \WikiRenderer\Generator\BlockSyntaxHighlight
         $this->syntaxClass = $config->syntaxClassPattern;
     }
 
-    public function setId($id)
-    {
+    public function setId($id) {
         $this->id = $id;
     }
 
-    public function addLine($content)
-    {
+    public function addLine($content) {
         $this->lines[] = $content;
     }
 
-    public function setSyntaxType($type)
-    {
+    public function setSyntaxType($type) {
         $this->syntax = $type;
     }
 
-    public function getSyntaxType()
-    {
+    public function getSyntaxType() {
         return $this->syntax;
     }
 
-    public function setFileName($filename)
-    {
+    public function setFileName($filename) {
         $this->filename = $filename;
     }
 
-    public function getFileName()
-    {
+    public function getFileName() {
         return $this->filename;
     }
 
-    public function isEmpty()
-    {
+    public function isEmpty() {
         return count($this->lines) == 0;
     }
 
-    public function generate()
-    {
+    public function generate() {
         if ($this->id) {
-            $text = '<pre id="'.htmlspecialchars($this->id).'">';
+            $text = '<pre id="' . htmlspecialchars($this->id) . '">';
         } else {
-            $text = '<'.$this->htmlTagName.'>';
+            $text = '<' . $this->htmlTagName . '>';
         }
         if ($this->filename) {
-            $text .= '<span class="code-filename">'.htmlspecialchars($this->filename)."</span><br/>\n";
+            $text .= '<span class="code-filename">' . htmlspecialchars($this->filename) . "</span><br/>\n";
         }
         $text .= '<code';
         if ($this->syntax) {
-            $text .= ' class="'.sprintf($this->syntaxClass, $this->syntax).'"';
+            $text .= ' class="' . sprintf($this->syntaxClass, $this->syntax) . '"';
         }
         $text .= '>';
         foreach ($this->lines as $k => $line) {
-            $text .= htmlspecialchars($line)."\n";
+            $text .= htmlspecialchars($line) . "\n";
         }
         $text .= '</code></pre>';
 

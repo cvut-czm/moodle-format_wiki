@@ -8,16 +8,15 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
-class Code extends AbstractInlineGenerator
-{
+class Code extends AbstractInlineGenerator {
     protected $supportedAttributes = array('id', 'type');
 
     protected $htmlTagName = 'code';
 
-    public function generate()
-    {
+    public function generate() {
         $html = '';
         foreach ($this->content as $content) {
             $html .= $content->generate();
@@ -26,12 +25,12 @@ class Code extends AbstractInlineGenerator
         $attr = '';
         foreach ($this->attributes as $name => $value) {
             if ($name == 'type') {
-                $attr .= ' class="code-'.htmlspecialchars($value).'"';
+                $attr .= ' class="code-' . htmlspecialchars($value) . '"';
             } else {
-                $attr .= ' '.$name.'="'.htmlspecialchars($value).'"';
+                $attr .= ' ' . $name . '="' . htmlspecialchars($value) . '"';
             }
         }
 
-        return '<'.$this->htmlTagName.$attr.'>'.$html.'</'.$this->htmlTagName.'>';
+        return '<' . $this->htmlTagName . $attr . '>' . $html . '</' . $this->htmlTagName . '>';
     }
 }

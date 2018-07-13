@@ -82,8 +82,8 @@ class porter {
      */
     public function delete_old(): porter {
 
-        $fs=get_file_storage();
-        $fs->delete_area_files($this->context->id,'format_wiki','wiki',0);
+        $fs = get_file_storage();
+        $fs->delete_area_files($this->context->id, 'format_wiki', 'wiki', 0);
         return $this;
     }
 
@@ -122,13 +122,13 @@ class porter {
 
         $fs = get_file_storage();
         foreach ($files as $file) {
-            $fullpath=$basepath . $file[0] . '/' . $file[1];
+            $fullpath = $basepath . $file[0] . '/' . $file[1];
             $fs->create_file_from_string([
                     'contextid' => $this->context->id,
                     'component' => 'format_wiki',
                     'filearea' => 'wiki',
                     'itemid' => 0,
-                    'filepath' => $file[0].'/',
+                    'filepath' => $file[0] . '/',
                     'filename' => $file[1],
                     'timecreated' => time(),
                     'timemodified' => time()

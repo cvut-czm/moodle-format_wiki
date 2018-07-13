@@ -10,6 +10,7 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Markup\Edux;
 
 use WikiRenderer\Generator\BlockListInterface;
@@ -17,8 +18,7 @@ use WikiRenderer\Generator\BlockListInterface;
 /**
  * Parse a list block.
  */
-class WikiList extends \WikiRenderer\Block
-{
+class WikiList extends \WikiRenderer\Block {
     public $type = 'list';
     protected $regexp = "/^(\s{2,})(\-|\*)\s*(.*)/";
 
@@ -32,13 +32,11 @@ class WikiList extends \WikiRenderer\Block
      */
     protected $indentStack = array();
 
-    public function isStarting($line)
-    {
+    public function isStarting($line) {
         return $this->isAccepting($line);
     }
 
-    public function isAccepting($string)
-    {
+    public function isAccepting($string) {
         $this->sameItem = false;
         if (!preg_match($this->regexp, $string, $this->_detectMatch)) {
             if (!count($this->indentStack)) {
@@ -66,21 +64,19 @@ class WikiList extends \WikiRenderer\Block
         // we should start an other block
         $type = $this->getItemType($this->_detectMatch[2]);
         if (count($this->indentStack) == 1 &&
-            $this->indentStack[0][0] == strlen($this->_detectMatch[1]) &&
-            $this->indentStack[0][1] != $type) {
+                $this->indentStack[0][0] == strlen($this->_detectMatch[1]) &&
+                $this->indentStack[0][1] != $type) {
             return false;
         }
 
         return true;
     }
 
-    protected function getItemType($type)
-    {
+    protected function getItemType($type) {
         return $type == '*' ? 'u' : 'o';
     }
 
-    public function open()
-    {
+    public function open() {
         $type = $this->getItemType($this->_detectMatch[2]);
         $this->generatorStack = array($this->generator);
         $this->indentStack = array(array(strlen($this->_detectMatch[1]), $type));
@@ -92,16 +88,14 @@ class WikiList extends \WikiRenderer\Block
         }
     }
 
-    public function close($reason)
-    {
+    public function close($reason) {
         $this->generatorStack = array();
         $this->indentStack = array();
 
         return parent::close($reason);
     }
 
-    protected function _createList($type)
-    {
+    protected function _createList($type) {
         $generator = $this->documentGenerator->getBlockGenerator('list');
         if ($type == 'u') {
             $generator->setListType(BlockListInterface::UNORDERED_LIST);
@@ -113,11 +107,10 @@ class WikiList extends \WikiRenderer\Block
         return $generator;
     }
 
-    public function validateLine()
-    {
+    public function validateLine() {
         if ($this->sameItem) {
             $last = $this->generatorStack[count($this->generatorStack) - 1];
-            $last->addContentToItem($this->parseInlineContent(' '.$this->_detectMatch[2]));
+            $last->addContentToItem($this->parseInlineContent(' ' . $this->_detectMatch[2]));
 
             return;
         }
@@ -143,7 +136,7 @@ class WikiList extends \WikiRenderer\Block
             if ($t[1] != $type) {
                 array_pop($this->generatorStack);
                 array_pop($this->indentStack);
-                $this->indentStack[] = array($t[0],$type);
+                $this->indentStack[] = array($t[0], $type);
                 $generator = $this->_createList($type);
                 $generator->addContentToItem($this->parseInlineContent($this->_detectMatch[3]));
                 $last = $this->generatorStack[count($this->generatorStack) - 1];
@@ -152,7 +145,7 @@ class WikiList extends \WikiRenderer\Block
 
                 return;
             }
-        } elseif ($d < 0) { // we have a new nested list
+        } else if ($d < 0) { // we have a new nested list
 
             $generator = $this->_createList($type);
             $generator->addContentToItem($this->parseInlineContent($this->_detectMatch[3]));

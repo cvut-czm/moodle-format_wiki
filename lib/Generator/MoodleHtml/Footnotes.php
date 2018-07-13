@@ -19,7 +19,7 @@ class Footnotes implements \WikiRenderer\Generator\BlockFootnoteInterface {
     protected $prefixId;
 
     public function __construct(\WikiRenderer\Generator\Config $config) {
-        $this->prefixId = $config->footnotesIdPrefix.rand(100, 999);
+        $this->prefixId = $config->footnotesIdPrefix . rand(100, 999);
     }
 
     public function addFootnote(\WikiRenderer\Generator\InlineFootnotelinkInterface $footnote) {
@@ -28,13 +28,13 @@ class Footnotes implements \WikiRenderer\Generator\BlockFootnoteInterface {
     }
 
     public function getLinkId($number) {
-        $id = $this->prefixId.'-'.$number;
-        $revid = 'rev-'.$id;
+        $id = $this->prefixId . '-' . $number;
+        $revid = 'rev-' . $id;
         return array($id, $revid);
     }
 
     public function setId($id) {
-        
+
     }
 
     public function isEmpty() {
@@ -42,8 +42,8 @@ class Footnotes implements \WikiRenderer\Generator\BlockFootnoteInterface {
     }
 
     public function generate() {
-        $text = '<div class="footnotes"><h4>Notes</h4>'."\n<ul>\n";
-        foreach($this->footnotes as $k=>$generator) {
+        $text = '<div class="footnotes"><h4>Notes</h4>' . "\n<ul>\n";
+        foreach ($this->footnotes as $k => $generator) {
             $number = $k + 1;
             list($id, $revid) = $this->getLinkId($number);
             $text .= "<li><span>[<a href=\"#$revid\" name=\"$id\" id=\"$id\">$number</a>]</span> ";

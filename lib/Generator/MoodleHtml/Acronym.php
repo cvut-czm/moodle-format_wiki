@@ -8,16 +8,15 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
-class Acronym extends AbstractInlineGenerator implements \WikiRenderer\Generator\InlineAcronymInterface
-{
+class Acronym extends AbstractInlineGenerator implements \WikiRenderer\Generator\InlineAcronymInterface {
     protected $htmlTagName = 'acronym';
 
     protected $supportedAttributes = array('id');
 
-    public function setTitle($title)
-    {
+    public function setTitle($title) {
         $this->attributes['title'] = $title;
     }
 }

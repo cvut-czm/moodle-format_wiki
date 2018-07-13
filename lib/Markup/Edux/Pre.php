@@ -10,18 +10,17 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Markup\Edux;
 
 /**
  * Parser for preformated content.
  */
-class Pre extends \WikiRenderer\Block
-{
+class Pre extends \WikiRenderer\Block {
     public $type = 'pre';
     protected $regexp = "/^(\s{2,})(.*)/";
 
-    public function validateLine()
-    {
-        $this->generator->addLine($this->_detectMatch[1].$this->_detectMatch[2]);
+    public function validateLine() {
+        $this->generator->addLine($this->_detectMatch[1] . $this->_detectMatch[2]);
     }
 }

@@ -10,13 +10,13 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Markup\Edux;
 
 /**
  * Parser for a link.
  */
-class Link extends \WikiRenderer\InlineTagWithSeparator
-{
+class Link extends \WikiRenderer\InlineTagWithSeparator {
     protected $name = 'a';
     protected $generatorName = 'link';
     protected $beginTag = '[[';
@@ -24,8 +24,7 @@ class Link extends \WikiRenderer\InlineTagWithSeparator
     protected $attribute = array('href', '$$');
     protected $separators = array('|');
 
-    public function getContent()
-    {
+    public function getContent() {
         $cntattr = count($this->attribute);
         $cnt = ($this->separatorCount + 1 > $cntattr) ? $cntattr : ($this->separatorCount + 1);
         list($href, $label) = $this->config->getLinkProcessor()->processLink($this->wikiContentArr[0], $this->generatorName);

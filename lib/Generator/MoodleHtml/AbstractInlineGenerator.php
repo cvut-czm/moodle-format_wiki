@@ -8,10 +8,10 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
-abstract class AbstractInlineGenerator implements \WikiRenderer\Generator\InlineComplexGeneratorInterface
-{
+abstract class AbstractInlineGenerator implements \WikiRenderer\Generator\InlineComplexGeneratorInterface {
     protected $htmlTagName = '';
 
     protected $supportedAttributes = array('id');
@@ -32,43 +32,36 @@ abstract class AbstractInlineGenerator implements \WikiRenderer\Generator\Inline
         $this->config = $config;
     }
 
-    public function addRawContent($string)
-    {
+    public function addRawContent($string) {
         $g = new Words($this->config);
         $g->addRawContent($string);
         $this->content[] = $g;
     }
 
-    public function setRawContent($string)
-    {
+    public function setRawContent($string) {
         $this->content = array();
         $this->addRawContent($string);
     }
 
-    public function addContent(\WikiRenderer\Generator\InlineGeneratorInterface $content)
-    {
+    public function addContent(\WikiRenderer\Generator\InlineGeneratorInterface $content) {
         $this->content[] = $content;
     }
 
-    public function addContentAtStart(\WikiRenderer\Generator\InlineGeneratorInterface $content)
-    {
+    public function addContentAtStart(\WikiRenderer\Generator\InlineGeneratorInterface $content) {
         array_unshift($this->content, $content);
     }
 
-    public function setContent(\WikiRenderer\Generator\InlineGeneratorInterface $content)
-    {
+    public function setContent(\WikiRenderer\Generator\InlineGeneratorInterface $content) {
         $this->content = array($content);
     }
 
-    public function setAttribute($name, $value)
-    {
+    public function setAttribute($name, $value) {
         if (in_array($name, $this->supportedAttributes)) {
             $this->attributes[$name] = $value;
         }
     }
 
-    public function getAttribute($name)
-    {
+    public function getAttribute($name) {
         if (isset($this->attributes[$name])) {
             return $this->attributes[$name];
         }
@@ -76,16 +69,14 @@ abstract class AbstractInlineGenerator implements \WikiRenderer\Generator\Inline
         return null;
     }
 
-    public function isEmpty()
-    {
+    public function isEmpty() {
         return count($this->content) == 0 && count($this->attributes) == 0;
     }
 
     /**
      * @return string
      */
-    public function generate()
-    {
+    public function generate() {
         $html = '';
         foreach ($this->content as $content) {
             $html .= $content->generate();
@@ -93,14 +84,13 @@ abstract class AbstractInlineGenerator implements \WikiRenderer\Generator\Inline
 
         $attr = '';
         foreach ($this->attributes as $name => $value) {
-            $attr .= ' '.$name.'="'.htmlspecialchars($value).'"';
+            $attr .= ' ' . $name . '="' . htmlspecialchars($value) . '"';
         }
 
-        return '<'.$this->htmlTagName.$attr.'>'.$html.'</'.$this->htmlTagName.'>';
+        return '<' . $this->htmlTagName . $attr . '>' . $html . '</' . $this->htmlTagName . '>';
     }
 
-    public function getChildGenerators()
-    {
+    public function getChildGenerators() {
         return $this->content;
     }
 }

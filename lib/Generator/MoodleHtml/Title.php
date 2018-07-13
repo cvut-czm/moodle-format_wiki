@@ -8,10 +8,10 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
-class Title implements \WikiRenderer\Generator\BlockTitleInterface
-{
+class Title implements \WikiRenderer\Generator\BlockTitleInterface {
     protected $htmlTagName = 'h';
 
     protected $lines = array();
@@ -23,37 +23,31 @@ class Title implements \WikiRenderer\Generator\BlockTitleInterface
     public function __construct(\WikiRenderer\Generator\Config $config) {
     }
 
-    public function setLevel($level)
-    {
+    public function setLevel($level) {
         $this->level = $level;
     }
 
-    public function getLevel()
-    {
+    public function getLevel() {
         return $this->level;
     }
 
-    public function setId($id)
-    {
+    public function setId($id) {
         $this->id = $id;
     }
 
-    public function addLine(\WikiRenderer\Generator\InlineGeneratorInterface $content)
-    {
+    public function addLine(\WikiRenderer\Generator\InlineGeneratorInterface $content) {
         $this->lines[] = $content;
     }
 
-    public function isEmpty()
-    {
+    public function isEmpty() {
         return count($this->lines) == 0;
     }
 
-    public function generate()
-    {
+    public function generate() {
         if ($this->id) {
-            $text = '<h'.$this->level.' id="'.htmlspecialchars($this->id).'">';
+            $text = '<h' . $this->level . ' id="' . htmlspecialchars($this->id) . '">';
         } else {
-            $text = '<h'.$this->level.'>';
+            $text = '<h' . $this->level . '>';
         }
 
         foreach ($this->lines as $k => $generator) {
@@ -62,7 +56,7 @@ class Title implements \WikiRenderer\Generator\BlockTitleInterface
             }
             $text .= $generator->generate();
         }
-        $text .= '</h'.$this->level.'>';
+        $text .= '</h' . $this->level . '>';
 
         return $text;
     }

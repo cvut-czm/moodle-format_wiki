@@ -31,7 +31,7 @@ namespace format_wiki\form;
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
-require_once($CFG->libdir.'/formslib.php');
+require_once($CFG->libdir . '/formslib.php');
 
 class import_form extends \moodleform {
 

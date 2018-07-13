@@ -10,18 +10,17 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Markup\Edux;
 
 /**
  * Parser for file content.
  */
-class File extends NoWiki
-{
+class File extends NoWiki {
     public $type = 'syntaxhighlight';
     protected $tagName = 'file';
 
-    public function validateLine()
-    {
+    public function validateLine() {
         if ($this->_args && $this->_args[1] != '') {
             $args = preg_split("/\s+/", $this->_args[1], 2);
             if ($args[0] != '-') {

@@ -10,13 +10,13 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Markup\Edux;
 
 /**
  * Parser for emphasys inline tag.
  */
-class Del extends \WikiRenderer\InlineTag
-{
+class Del extends \WikiRenderer\InlineTag {
     protected $name = 'del';
     protected $generatorName = 'del';
     protected $beginTag = '<del>';

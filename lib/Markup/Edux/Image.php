@@ -10,13 +10,13 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Markup\Edux;
 
 /**
  * Parser for an image inline tag.
  */
-class Image extends \WikiRenderer\InlineTagWithSeparator
-{
+class Image extends \WikiRenderer\InlineTagWithSeparator {
     protected $name = 'image';
     protected $generatorName = 'image';
     protected $beginTag = '{{';
@@ -24,8 +24,7 @@ class Image extends \WikiRenderer\InlineTagWithSeparator
     protected $attribute = array('filesrc', 'title');
     protected $separators = array('|');
 
-    public function getContent()
-    {
+    public function getContent() {
         $contents = $this->wikiContentArr;
         if (count($contents) == 1) {
             $href = $contents[0];
@@ -44,9 +43,9 @@ class Image extends \WikiRenderer\InlineTagWithSeparator
         if (preg_match("/^(\s*)([^\s\?]+)(\?[a-zA-Z0-9]+)?(\s*)$/", $href, $m)) {
             if ($m[1] != '' && $m[4] != '') {
                 $align = 'center';
-            } elseif ($m[1] != '') {
+            } else if ($m[1] != '') {
                 $align = 'right';
-            } elseif ($m[4] != '') {
+            } else if ($m[4] != '') {
                 $align = 'left';
             }
             $href = $m[2];
@@ -56,7 +55,7 @@ class Image extends \WikiRenderer\InlineTagWithSeparator
                     if (isset($m2[2])) {
                         $height = $m2[3];
                     }
-                } elseif ($m[3] == '?linkonly') {
+                } else if ($m[3] == '?linkonly') {
                     $linkonly = true;
                 }
             }

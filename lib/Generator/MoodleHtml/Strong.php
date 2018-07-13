@@ -8,9 +8,9 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
-class Strong extends AbstractInlineGenerator
-{
+class Strong extends AbstractInlineGenerator {
     protected $htmlTagName = 'strong';
 }

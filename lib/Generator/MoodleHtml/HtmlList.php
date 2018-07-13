@@ -8,12 +8,12 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
 use WikiRenderer\Generator\BlockListInterface;
 
-class HtmlList implements BlockListInterface
-{
+class HtmlList implements BlockListInterface {
     protected $items = array();
 
     protected $listType = 0;
@@ -27,28 +27,23 @@ class HtmlList implements BlockListInterface
     public function __construct(\WikiRenderer\Generator\Config $config) {
     }
 
-    public function setId($id)
-    {
+    public function setId($id) {
         $this->id = $id;
     }
 
-    public function setListType($type)
-    {
+    public function setListType($type) {
         $this->listType = $type;
     }
 
-    public function createItem()
-    {
+    public function createItem() {
         ++$this->currentIndex;
     }
 
-    public function isEmpty()
-    {
+    public function isEmpty() {
         return count($this->items) == 0;
     }
 
-    public function addContentToItem(\WikiRenderer\Generator\GeneratorInterface $content, $itemIndex = -1)
-    {
+    public function addContentToItem(\WikiRenderer\Generator\GeneratorInterface $content, $itemIndex = -1) {
         if ($itemIndex == -1) {
             $itemIndex = $this->currentIndex;
         }
@@ -58,21 +53,20 @@ class HtmlList implements BlockListInterface
         $this->items[$itemIndex][] = $content;
     }
 
-    public function generate()
-    {
+    public function generate() {
         $attr = '';
         if ($this->listType == $this::ORDERED_LIST) {
             $tag = 'ol';
             if ($this->startIndex != 1) {
-                $attr = ' start="'.$this->startIndex.'"';
+                $attr = ' start="' . $this->startIndex . '"';
             }
         } else {
             $tag = 'ul';
         }
         if ($this->id) {
-            $text = '<'.$tag.$attr.' id="'.htmlspecialchars($this->id).'">';
+            $text = '<' . $tag . $attr . ' id="' . htmlspecialchars($this->id) . '">';
         } else {
-            $text = '<'.$tag.$attr.'>';
+            $text = '<' . $tag . $attr . '>';
         }
 
         foreach ($this->items as $k => $generators) {
@@ -80,11 +74,11 @@ class HtmlList implements BlockListInterface
             $previousWasText = false;
             foreach ($generators as $j => $generator) {
                 if ($generator instanceof \WikiRenderer\Generator\BlockGeneratorInterface &&
-                    !($generator instanceof \WikiRenderer\Generator\SingleLineBlock)) {
+                        !($generator instanceof \WikiRenderer\Generator\SingleLineBlock)) {
                     if ($previousWasText || $j == 0) {
                         $text .= "\n";
                     }
-                    $text .= $generator->generate()."\n";
+                    $text .= $generator->generate() . "\n";
                     $previousWasText = false;
                 } else {
                     $words = $generator->generate();
@@ -96,7 +90,7 @@ class HtmlList implements BlockListInterface
             }
             $text .= '</li>';
         }
-        $text .= "\n".'</'.$tag.'>';
+        $text .= "\n" . '</' . $tag . '>';
 
         return $text;
     }

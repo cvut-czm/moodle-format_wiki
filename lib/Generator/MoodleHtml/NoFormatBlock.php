@@ -8,9 +8,9 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
-class NoFormatBlock extends Preformated
-{
+class NoFormatBlock extends Preformated {
     protected $htmlTagName = 'div';
 }

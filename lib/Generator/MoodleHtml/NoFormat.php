@@ -8,53 +8,47 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
-class NoFormat implements \WikiRenderer\Generator\InlineRawWordsInterface
-{
+class NoFormat implements \WikiRenderer\Generator\InlineRawWordsInterface {
     protected $content = array();
 
     public function __construct(\WikiRenderer\Generator\Config $config) {
 
     }
 
-    public function init($words = '')
-    {
+    public function init($words = '') {
         if ($words == '') {
             return;
         }
         $this->content[] = htmlspecialchars($words);
     }
 
-    public function addRawContent($string)
-    {
+    public function addRawContent($string) {
         $this->content[] = htmlspecialchars($string);
     }
 
-    public function addContent(\WikiRenderer\Generator\InlineWordsInterface $words)
-    {
+    public function addContent(\WikiRenderer\Generator\InlineWordsInterface $words) {
         $this->content[] = $words;
     }
 
-    public function isEmpty()
-    {
+    public function isEmpty() {
         return count($this->content) == 0;
     }
 
     /**
      * @return string
      */
-    public function generate()
-    {
+    public function generate() {
         $finalContent = '';
-        foreach($this->content as $content) {
+        foreach ($this->content as $content) {
             if (is_object($content)) {
                 $finalContent .= $content->generate();
-            }
-            else {
+            } else {
                 $finalContent .= $content;
             }
         }
-        return '<span>'.$finalContent.'</span>';
+        return '<span>' . $finalContent . '</span>';
     }
 }

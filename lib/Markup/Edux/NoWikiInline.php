@@ -10,20 +10,19 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Markup\Edux;
 
 /**
  * Parse code inline tag.
  */
-class NoWikiInline extends \WikiRenderer\InlineTag
-{
+class NoWikiInline extends \WikiRenderer\InlineTag {
     protected $name = 'nowiki';
     protected $generatorName = 'noformat';
     protected $beginTag = '%%';
     protected $endTag = '%%';
 
-    public function isOtherTagAllowed()
-    {
+    public function isOtherTagAllowed() {
         return false;
     }
 }

@@ -8,10 +8,10 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
-class Preformated implements \WikiRenderer\Generator\BlockOfRawLinesInterface
-{
+class Preformated implements \WikiRenderer\Generator\BlockOfRawLinesInterface {
     protected $htmlTagName = 'pre';
 
     protected $lines = array();
@@ -21,36 +21,32 @@ class Preformated implements \WikiRenderer\Generator\BlockOfRawLinesInterface
     public function __construct(\WikiRenderer\Generator\Config $config) {
     }
 
-    public function setId($id)
-    {
+    public function setId($id) {
         $this->id = $id;
     }
 
     /**
      * @param string $content
      */
-    public function addLine($content)
-    {
+    public function addLine($content) {
         $this->lines[] = $content;
     }
 
-    public function isEmpty()
-    {
+    public function isEmpty() {
         return count($this->lines) == 0;
     }
 
-    public function generate()
-    {
+    public function generate() {
         if ($this->id) {
-            $text = '<'.$this->htmlTagName.' id="'.htmlspecialchars($this->id).'">';
+            $text = '<' . $this->htmlTagName . ' id="' . htmlspecialchars($this->id) . '">';
         } else {
-            $text = '<'.$this->htmlTagName.'>';
+            $text = '<' . $this->htmlTagName . '>';
         }
 
         foreach ($this->lines as $k => $line) {
-            $text .= htmlspecialchars($line)."\n";
+            $text .= htmlspecialchars($line) . "\n";
         }
-        $text .= '</'.$this->htmlTagName.'>';
+        $text .= '</' . $this->htmlTagName . '>';
 
         return $text;
     }

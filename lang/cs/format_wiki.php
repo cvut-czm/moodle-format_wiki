@@ -26,30 +26,30 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname']='Wiki formát';
-$string['pagefile']='Soubory stránek';
-$string['mediafile']='Média soubory';
-$string['overwrite_files']='Přepsat soubory';
-$string['delete_old_wiki']='Smazat starou wiki';
+$string['pluginname'] = 'Wiki formát';
+$string['pagefile'] = 'Soubory stránek';
+$string['mediafile'] = 'Média soubory';
+$string['overwrite_files'] = 'Přepsat soubory';
+$string['delete_old_wiki'] = 'Smazat starou wiki';
 
-$string['create:page']='Vytvořit stránku';
-$string['create:folder']='Založit složku';
+$string['create:page'] = 'Vytvořit stránku';
+$string['create:folder'] = 'Založit složku';
 
-$string['wiki:lectures']='Přednášky';
-$string['wiki:labs']='Laboratoře';
-$string['wiki:annotation']='Anotace';
-$string['wiki:av']='Audio/Video';
-$string['wiki:en']='English';
-$string['wiki:news']='Novinky';
-$string['wiki:parttime']='Dálkové studium';
-$string['wiki:private']='Privátní složka';
-$string['wiki:teacher']='Učitelé';
-$string['wiki:team']='Týmy';
-$string['wiki:solutions']='Řešení';
-$string['wiki:tutorials']='Cvičení';
-$string['wiki:seminars']='Semináře';
-$string['wiki:wiki']='Wiki';
-$string['wiki:start']='Index';
-$string['wiki:funding']='Dotace';
-$string['wiki:playground']='Pískoviště';
+$string['wiki:lectures'] = 'Přednášky';
+$string['wiki:labs'] = 'Laboratoře';
+$string['wiki:annotation'] = 'Anotace';
+$string['wiki:av'] = 'Audio/Video';
+$string['wiki:en'] = 'English';
+$string['wiki:news'] = 'Novinky';
+$string['wiki:parttime'] = 'Dálkové studium';
+$string['wiki:private'] = 'Privátní složka';
+$string['wiki:teacher'] = 'Učitelé';
+$string['wiki:team'] = 'Týmy';
+$string['wiki:solutions'] = 'Řešení';
+$string['wiki:tutorials'] = 'Cvičení';
+$string['wiki:seminars'] = 'Semináře';
+$string['wiki:wiki'] = 'Wiki';
+$string['wiki:start'] = 'Index';
+$string['wiki:funding'] = 'Dotace';
+$string['wiki:playground'] = 'Pískoviště';
 

@@ -10,13 +10,13 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Markup\Edux;
 
 /**
  * Parser for Superscript inline tag.
  */
-class Superscript extends \WikiRenderer\InlineTag
-{
+class Superscript extends \WikiRenderer\InlineTag {
     protected $name = 'sup';
     protected $generatorName = 'superscript';
     protected $beginTag = '<sup>';

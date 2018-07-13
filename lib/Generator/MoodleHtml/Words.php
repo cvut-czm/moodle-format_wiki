@@ -8,18 +8,17 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
-class Words implements \WikiRenderer\Generator\InlineWordsInterface
-{
+class Words implements \WikiRenderer\Generator\InlineWordsInterface {
     protected $content = array();
 
     public function __construct(\WikiRenderer\Generator\Config $config) {
 
     }
 
-    public function init($words = '', $raw = true)
-    {
+    public function init($words = '', $raw = true) {
         if ($words == '') {
             return;
         }
@@ -30,26 +29,22 @@ class Words implements \WikiRenderer\Generator\InlineWordsInterface
         }
     }
 
-    public function addRawContent($string)
-    {
+    public function addRawContent($string) {
         $this->content[] = $string;
     }
 
-    public function addGeneratedContent($string)
-    {
+    public function addGeneratedContent($string) {
         $this->content[] = $string;
     }
 
-    public function isEmpty()
-    {
+    public function isEmpty() {
         return count($this->content) == 0;
     }
 
     /**
      * @return string
      */
-    public function generate()
-    {
+    public function generate() {
         return implode('', $this->content);
     }
 }

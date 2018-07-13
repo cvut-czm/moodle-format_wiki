@@ -10,27 +10,25 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Markup\Edux;
 
 /**
  * Parse a title block.
  */
-class Macro extends \WikiRenderer\Block
-{
+class Macro extends \WikiRenderer\Block {
     public $type = 'macro';
     protected $regexp = "/^\s*~~([^~]*)~~\s*$/";
     protected $_closeNow = true;
 
     protected $content = '';
 
-    public function __construct(\WikiRenderer\Renderer $wr, \WikiRenderer\Generator\DocumentGeneratorInterface $generator)
-    {
+    public function __construct(\WikiRenderer\Renderer $wr, \WikiRenderer\Generator\DocumentGeneratorInterface $generator) {
         $this->engine = $wr;
         $this->documentGenerator = $generator;
     }
 
-    public function validateLine()
-    {
+    public function validateLine() {
         if (preg_match('/^\s*(\w+)(?:\:?\s*(.+))?\s*$/', $this->_detectMatch[1], $m)) {
             $macroName = strtolower($m[1]);
             $macroArg = isset($m[2]) ? $m[2] : '';
@@ -44,17 +42,16 @@ class Macro extends \WikiRenderer\Block
         $this->content = $this->_detectMatch[0];
     }
 
-    public function close($reason)
-    {
-        if(strpos($this->content,'~~')===0)
+    public function close($reason) {
+        if (strpos($this->content, '~~') === 0) {
             return null;
+        }
         $block = new \WikiRenderer\Generator\SingleLineBlock($this->documentGenerator->getConfig());
         $block->setLineAsString($this->content);
 
         return $block;
     }
 
-    public function __clone()
-    {
+    public function __clone() {
     }
 }

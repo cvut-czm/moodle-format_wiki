@@ -10,13 +10,13 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Markup\Edux;
 
 /**
  * Parser for sub inline tag.
  */
-class Subscript extends \WikiRenderer\InlineTag
-{
+class Subscript extends \WikiRenderer\InlineTag {
     protected $name = 'sub';
     protected $generatorName = 'subscript';
     protected $beginTag = '<sub>';

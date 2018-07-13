@@ -8,10 +8,10 @@
  *
  * @licence MIT see LICENCE file
  */
+
 namespace Generator\MoodleHtml;
 
-class BlockQuote implements \WikiRenderer\Generator\BlockBlockQuoteInterface
-{
+class BlockQuote implements \WikiRenderer\Generator\BlockBlockQuoteInterface {
     protected $lines = array();
 
     protected $id = '';
@@ -25,40 +25,36 @@ class BlockQuote implements \WikiRenderer\Generator\BlockBlockQuoteInterface
         $this->config = $config;
     }
 
-    public function setId($id)
-    {
+    public function setId($id) {
         $this->id = $id;
     }
 
-    public function addContent(\WikiRenderer\Generator\GeneratorInterface $content)
-    {
+    public function addContent(\WikiRenderer\Generator\GeneratorInterface $content) {
         $this->lines[] = $content;
     }
 
-    public function isEmpty()
-    {
+    public function isEmpty() {
         return count($this->lines) == 0;
     }
 
-    public function generate()
-    {
+    public function generate() {
         if ($this->id) {
-            $text = '<blockquote id="'.htmlspecialchars($this->id).'">';
+            $text = '<blockquote id="' . htmlspecialchars($this->id) . '">';
         } else {
             $text = '<blockquote>';
         }
 
-        $text .="\n";
+        $text .= "\n";
 
         $currentPara = null;
         foreach ($this->lines as $generator) {
             if ($generator instanceof \WikiRenderer\Generator\BlockGeneratorInterface) {
                 if ($currentPara) {
-                    $text .= $currentPara->generate()."\n";
+                    $text .= $currentPara->generate() . "\n";
                     $currentPara = null;
                 }
-                $text .= $generator->generate()."\n";
-            } elseif ($currentPara) {
+                $text .= $generator->generate() . "\n";
+            } else if ($currentPara) {
                 $currentPara->addLine($generator);
             } else {
                 $currentPara = new Paragraph($this->config);
