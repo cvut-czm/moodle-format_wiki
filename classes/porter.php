@@ -84,6 +84,8 @@ class porter {
 
         $fs = get_file_storage();
         $fs->delete_area_files($this->context->id, 'format_wiki', 'wiki', 0);
+        $fs->delete_area_files($this->context->id, 'format_wiki', 'pages', 0);
+        $fs->delete_area_files($this->context->id, 'format_wiki', 'media', 0);
         return $this;
     }
 
@@ -97,7 +99,24 @@ class porter {
         unlink($this->tempmedia);
         return $this;
     }
-
+    static function rmdirr($dirname)
+    {
+        if (!file_exists($dirname)) {
+            return false;
+        }
+        if (is_file($dirname) || is_link($dirname)) {
+            return unlink($dirname);
+        }
+        $dir = dir($dirname);
+        while (false !== $entry = $dir->read()) {
+            if ($entry == '.' || $entry == '..') {
+                continue;
+            }
+            self::rmdirr($dirname . DIRECTORY_SEPARATOR . $entry);
+        }
+        $dir->close();
+        return rmdir($dirname);
+    }
     /**
      * Port data from tgz.
      *
@@ -118,23 +137,42 @@ class porter {
         $basepath = $path . '/' . $coursecode . '/data';
 
         $files = [];
-        $this->walk($basepath, '', $files);
+        $this->walk($basepath.'/pages', '', $files);
 
         $fs = get_file_storage();
         foreach ($files as $file) {
-            $fullpath = $basepath . $file[0] . '/' . $file[1];
+            $fullpath = $basepath.'/pages' . $file[0] . '/' . $file[1];
             $fs->create_file_from_string([
                     'contextid' => $this->context->id,
                     'component' => 'format_wiki',
-                    'filearea' => 'wiki',
+                    'filearea' => 'pages',
                     'itemid' => 0,
                     'filepath' => $file[0] . '/',
                     'filename' => $file[1],
                     'timecreated' => time(),
                     'timemodified' => time()
             ], file_get_contents($fullpath));
-        }
 
+        }
+        $files = [];
+        $this->walk($basepath.'/media', '', $files);
+
+        $fs = get_file_storage();
+        foreach ($files as $file) {
+            $fullpath = $basepath.'/media' . $file[0] . '/' . $file[1];
+            $fs->create_file_from_string([
+                    'contextid' => $this->context->id,
+                    'component' => 'format_wiki',
+                    'filearea' => 'media',
+                    'itemid' => 0,
+                    'filepath' => $file[0] . '/',
+                    'filename' => $file[1],
+                    'timecreated' => time(),
+                    'timemodified' => time()
+            ], file_get_contents($fullpath));
+
+        }
+        self::rmdirr($basepath);
         return $this;
     }
 

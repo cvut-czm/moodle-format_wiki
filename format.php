@@ -28,57 +28,39 @@
 
 require 'vendor/autoload.php';
 $id = required_param('id', PARAM_INT);
-$page = optional_param('page', '', PARAM_ALPHANUMEXT);
+$page = optional_param('page', 'start', PARAM_RAW);
 $context = context_course::instance($id);
 $parts = explode('_', $page);
 $fs = get_file_storage();
 
-function parse($parts, $context): stored_file {
-    $fs = get_file_storage();
-    $tree = $fs->get_area_tree($context->id, 'format_wiki', 'wiki', 0);
-    $tree = $tree['subdirs']['pages'];
-    $c = 0;
-    $count = count($parts);
-    $preamble = '';
-    foreach ($parts as $part) {
-        if (!empty($preamble)) {
-            $part = $preamble . '_' . $part;
-        }
-        if (empty($part)) {
-            $c++;
-            continue;
-        } else if (isset($tree['subdirs'][$part])) {
-            $tree = $tree['subdirs'][$part];
-            $c++;
-            continue;
-        } else if ($c + 1 == $count) {
-            if (isset($tree['files'][$part . '.txt'])) {
-                return $tree['files'][$part . '.txt'];
-            } else if (isset($tree['files']['start.txt'])) {
-                return $tree['files']['start.txt'];
-            }
-        }
-        $preamble = $part;
-        $c++;
-    }
+\format_wiki\wiki_url::set_current_context($context);
+\format_wiki\wiki_url::set_current_page($page);
+$file = \format_wiki\wiki_url::from_moodle_url( $page)->get_resource();
+if ($file === false) {
+    global $PAGE;
+    $renderer = $PAGE->get_renderer('format_wiki');
+    echo $renderer->render_from_template('format_wiki/pagenotexist',[]);
+} else {
+
+    $markupConfig = new  Markup\Edux\Config($context, (new moodle_url('/course/view.php', ['id' => $id])) . '&page=%s');
+
+    // then choose a generator, e.g., the object which generates
+    // the result text in the expected format. Here, HTML...
+    $genConfig = new \Generator\MoodleHtml\Config();
+
+    $generator = new \Generator\MoodleHtml\Document($genConfig);
+
+    // now instancy the WikiRenderer engine
+    $wr = new \WikiRenderer\Renderer($generator, $markupConfig);
+
+    echo '<div class="d-flex flex-row-reverse">';
+    echo '<a class="btn btn-outline-primary ml-2" href="' .
+            (new moodle_url('/course/format/wiki/revisions.php', ['id' => $id, 'page' => $page])) . '">' .
+            get_string('revisions', 'format_wiki') . '</a>';
+    echo '<a class="btn btn-outline-primary" href="' .
+            (new moodle_url('/course/format/wiki/edit.php', ['id' => $id, 'page' => $page])) . '">' . get_string('edit') . '</a>';
+    echo '</div>';
+    // call render() method: it will parse DokuWiki syntax, and will
+    // generate HTML content
+    echo $wr->render($file->get_content());
 }
-
-$file = parse($parts, $context);
-$markupConfig = new  Markup\Edux\Config($context, (new moodle_url('/course/view.php', ['id' => $id])) . '&page=%s');
-
-// then choose a generator, e.g., the object which generates
-// the result text in the expected format. Here, HTML...
-$genConfig = new \Generator\MoodleHtml\Config();
-
-$generator = new \Generator\MoodleHtml\Document($genConfig);
-
-// now instancy the WikiRenderer engine
-$wr = new \WikiRenderer\Renderer($generator, $markupConfig);
-
-echo '<div class="d-flex flex-row-reverse">';
-echo '<a class="btn btn-outline-primary ml-2" href="#">Revize</a>';
-echo '<a class="btn btn-outline-primary" href="#">Editovat stránku</a>';
-echo '</div>';
-// call render() method: it will parse DokuWiki syntax, and will
-// generate HTML content
-echo $wr->render($file->get_content());

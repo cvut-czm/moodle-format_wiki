@@ -15,16 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details
+ * This is a one-line short description of the file.
  *
- * @package    format
- * @subpackage wiki
- * @copyright  Jiri Fryc
+ * You can have a rather longer description of the file as well,
+ * if you like, and it can span multiple lines.
+ *
+ * @package    xxxxxx
+ * @category   xxxxxx
+ * @copyright  2018 CVUT CZM, Jiri Fryc
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-defined('MOODLE_INTERNAL') || die();
-
-$plugin->version = 2018071700;        // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires = 2018050800;        // Requires this Moodle version.
-$plugin->component = 'format_wiki';    // Full name of the plugin (used for diagnostics).
+ 

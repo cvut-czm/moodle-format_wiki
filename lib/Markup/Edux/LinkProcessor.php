@@ -10,6 +10,7 @@
  */
 
 namespace Markup\Edux;
+use format_wiki\wiki_url;
 
 /**
  * link processor that support Trac url.
@@ -70,7 +71,8 @@ class LinkProcessor implements \WikiRenderer\LinkProcessor\LinkProcessorInterfac
                     $url = sprintf($this->wikiBaseUrl, str_replace(':', '_', $url)) . $m[1];
                 }
             } else {
-                $url = sprintf($this->wikiBaseUrl, str_replace(':', '_', $url));
+                $label=wiki_url::from_wiki_link($label)->get_page();
+                $url = sprintf($this->wikiBaseUrl, $label);
             }
         }
 
@@ -78,15 +80,13 @@ class LinkProcessor implements \WikiRenderer\LinkProcessor\LinkProcessorInterfac
             $label = substr($label, 0, 40) . '(..)';
         }
 
-        return array($url, str_replace('..', '', str_replace(':', '_', $label)));
+        return [$url, $label];
     }
 
     public function processMediaLink($a, $b) {
         $fs = get_file_storage();
-        $parts = explode(':', $a);
-        $filename = array_pop($parts);
-        $path = implode('/', $parts);
-        $file = $fs->get_file($this->context->id, 'format_wiki', 'media', 0, $path, $filename);
-        return [\moodle_url::make_pluginfile_url($this->context->id, 'format_wiki', 'media', 0, $path, $filename), $filename];
+        $wiki=wiki_url::from_media_link($a);
+        $wikiurl=$wiki->get_media_url()->raw_out(false);
+        return [$wikiurl, substr($wiki->get_page(),strrpos($wiki->get_page(),'/')+1)];
     }
 }

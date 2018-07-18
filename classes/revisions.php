@@ -26,31 +26,33 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once('../../../config.php');
-require_once('vendor/autoload.php');
+namespace format_wiki;
 
-$id = required_param('id',PARAM_INT);
-$history=\format_wiki\entity\format_wiki_history::get($id);
+use DiffMatchPatch\DiffMatchPatch;
 
-$dms= new \DiffMatchPatch\DiffMatchPatch();
-$patch=$dms->patch_fromText($history->patch);
-$new=$history->get_page_entity()->get_file()->get_content();
-$old=$history->get_content();
-$context=context_course::instance($history->get_page_entity()->courseid);
+defined('MOODLE_INTERNAL') || die();
 
+class revisions {
 
-$pageurl = new moodle_url('/course/format/wiki/diff_compare.php', ['id' => $id]);
-$PAGE->set_url($pageurl);
-$PAGE->set_context($context);
-$PAGE->set_title("{$SITE->shortname}");
-$PAGE->set_heading(get_string('title:diff_compare','format_wiki'));
-$output = $PAGE->get_renderer('format_wiki');
+    public static function is_changed(string $new,string $old) : bool
+    {
+        $dmp = new DiffMatchPatch();
+        $diffs = $dmp->diff_main($new, $old);
+        foreach ($diffs as $diff)
+            if($diff[0]!==0)
+                return true;
+        return false;
+    }
+    public static function get_patch(string $old, string $new): string {
+        $dmp = new DiffMatchPatch();
+        $diffs = $dmp->diff_main($old, $new);
+        $patches = $dmp->patch_make($diffs);
+        return $dmp->patch_toText($patches);
+    }
 
-$data=[];
-$data['date_old']=gmdate('Y-m-d H:i:s',$history->timecreated);
-$data['old']=$dms->diff_prettyHtml($dms->diff_main($old,$new));
-$data['new']=str_replace("\n",'¶<br/>',$new);
-
-echo $output->header();
-echo $output->render_from_template('format_wiki/diff_compare',$data);
-echo $output->footer();
+    public static function apply_patch(string $new, string $patch): string {
+        $dmp = new DiffMatchPatch();
+        $patches = $dmp->patch_fromText($patch);
+        return $dmp->patch_apply($patches, $new)[0];
+    }
+}

@@ -1,0 +1,42 @@
+<form method="post" action="{{{url}}}">
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#edit" role="tab" aria-controls="edit" aria-selected="true">Edit</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="profile-tab" data-toggle="tab" onclick="previewtabswitch()" href="#previewtab" role="tab" aria-controls="previewtab" aria-selected="false">Preview</a>
+    </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="edit" role="tabpanel" aria-labelledby="edit-tab">
+        {{{page}}}
+    </div>
+    <div class="tab-pane fade" id="previewtab" role="tabpanel" aria-labelledby="preview-tab">...</div>
+</div>
+<div class="float-right mt-4">
+    <input type="submit" class="btn btn-outline-success" value="{{#str}}save{{/str}}"></input>
+</div>
+</form>
+<script>
+    function previewtabswitch() { /** TODO: Rewrite to moodle format. */
+        $('#previewtab').html('{{#str}} please_wait_generation, format_wiki {{/str}}');
+        $.post('/course/format/wiki/parse.php',
+                {
+                    id: '{{id}}',
+                    page: '{{page_url}}',
+                    text: $('#wikipage_input').val()
+                },
+                function(data,status){
+                    $('#previewtab').html(data);
+                }
+        );
+    }
+</script>
+{{#js}}
+    $.fn.selectRange = function(start, end) {
+    var e = document.getElementById($(this).attr('id'));
+    if (!e) return;
+    else if (e.setSelectionRange) { e.focus(); e.setSelectionRange(start, end); } /* WebKit */
+    else if (e.createTextRange) { var range = e.createTextRange(); range.collapse(true); range.moveEnd('character', end); range.moveStart('character', start); range.select(); } /* IE */
+    else if (e.selectionStart) { e.selectionStart = start; e.selectionEnd = end; }};
+{{/js}}

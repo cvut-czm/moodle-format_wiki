@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<XMLDB PATH="format/wiki/db" VERSION="20120122" COMMENT="XMLDB file for Moodle mod/assignment"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="../../../../lib/xmldb/xmldb.xsd"
+>
+    <TABLES>
+        <TABLE NAME="format_wiki_section_mapping">
+            <FIELDS>
+                <FIELD NAME="id" SEQUENCE="true" LENGTH="10" TYPE="int" NOTNULL="true"/>
+                <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Course id"/>
+                <FIELD NAME="sectionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Section id"/>
+                <FIELD NAME="page" TYPE="char" LENGTH="512" NOTNULL="true" SEQUENCE="false" COMMENT="Page url" />
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="format_wiki_history" COMMENT="Defines kos courses from KOS">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" COMMENT="Internal ID"/>
+                <FIELD NAME="patch" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Diff file"/>
+                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Modification date"/>
+                <FIELD NAME="summary" SEQUENCE="false" TYPE="char" LENGTH="512" NOTNULL="true"/>
+                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="User id"/>
+                <FIELD NAME="pageid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Mapping from format_wiki_section_mapping"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+    </TABLES>
+</XMLDB>

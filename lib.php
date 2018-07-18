@@ -44,7 +44,6 @@ class format_wiki extends format_base {
      *
      * We have custom flatnav rendering, that allow us better control.
      *
-     * @return flat_navigation_node[]
      */
     public function extend_flat_navigation(flat_navigation $flat_navigation) {
         $courseid = $this->courseid;
@@ -57,7 +56,10 @@ class format_wiki extends format_base {
                         new pix_icon('i/course', '')), 0);
         $header->type = 'header';
         $flat_navigation->add($header);
-        $this->walk_tree_structure($flat_navigation);
+        //        $this->walk_tree_structure($flat_navigation); DEPRECATED
+        $sidebar=new \format_wiki\sidebar($courseid,-1);
+        $sidebar->set_current_page(optional_param('page','/start',PARAM_RAW));
+        $sidebar->generate_to($flat_navigation);
         $flat_navigation->add(new flat_navigation_node(self::flatnavnode_builder($createpage, $createpage, 'wiki_create_page',
                 new moodle_url('/course/format/wiki/newpage.php', ['id' => $courseid]), null, new pix_icon('t/add', '')), 1));
 
@@ -65,10 +67,8 @@ class format_wiki extends format_base {
 
     private function walk_tree_structure(flat_navigation $flat_navigation) {
         $fs = get_file_storage();
-        $tree = $fs->get_area_tree(context_course::instance($this->courseid)->id, 'format_wiki', 'wiki', 0);
-        if (isset($tree['subdirs']['pages'])) {
-            $this->recursion($flat_navigation, $tree['subdirs']['pages'], '', null, 0, false);
-        }
+        $tree = $fs->get_area_tree(context_course::instance($this->courseid)->id, 'format_wiki', 'pages', 0);
+        $this->recursion($flat_navigation, $tree, '', null, 0, false);
     }
 
     private function node_create_for_file($name, $path, $indent, $parent, $hidden) {
@@ -80,8 +80,8 @@ class format_wiki extends format_base {
         $trans = get_string_manager()->string_exists('wiki:' . $name, 'format_wiki') ? get_string('wiki:' . $name, 'format_wiki') :
                 $name;
         $node = new flat_navigation_node(self::flatnavnode_builder(
-                $trans, $trans, 'wiki_page_' . $path . '_' . $name,
-                new moodle_url('/course/view.php', ['id' => $PAGE->course->id, 'page' => $path . '_' . $name]), $parent), $indent);
+                $trans, $trans, 'wiki_page/' . $path . '/' . $name,
+                (new moodle_url('/course/view.php', ['id' => $PAGE->course->id])).'&page='.$path . '/' . $name, $parent), $indent);
         $node->hidden = $hidden;
         return $node;
     }
@@ -111,15 +111,15 @@ class format_wiki extends format_base {
             if ($files == 1 && $subdirs == 0) {
                 $filename = key($subdir['files']);
                 if ($filename == 'start.txt' || $filename == $subdir['dirname'] . '.txt') {
-                    $filename = '';
+                    $filename = '/start';
                 } else {
                     $filename = '/' . $filename;
                 }
                 $flat_navigation->add($this->node_create_for_file($append . $subdir['dirname'] . $filename,
-                        $path . '_' . $subdir['dirname'], $indent, $parent, $hidden));
+                        $path . '/' . $subdir['dirname'], $indent, $parent, $hidden));
             } else if ($files == 0 && $subdirs > 0) {
                 foreach ($subdir['subdirs'] as $s) {
-                    $this->recursion($flat_navigation, $s, $path . '_' . $subdir['dirname'] . $s['dirname'], $parent, $indent + 1,
+                    $this->recursion($flat_navigation, $s, $path . '/' . $subdir['dirname'] . $s['dirname'], $parent, $indent + 1,
                             $hidden, $subdir['dirname'] . '/');
                 }
             } else if ($files == 0 && $subdirs == 0) {
@@ -129,13 +129,13 @@ class format_wiki extends format_base {
                         get_string('wiki:' . $append . $subdir['dirname'], 'format_wiki') : $append . $subdir['dirname'];
                 $node = new flat_navigation_node(self::flatnavnode_builder(
                         $trans, $trans,
-                        'wiki_folder_' . $path . '_' . $subdir['dirname'], null, $parent),
+                        'wiki_folder/' . $path . '/' . $subdir['dirname'], null, $parent),
                         $indent);
                 $node->isexpandable = true;
                 $node->collapse = true;
                 $node->hidden = $hidden;
                 $flat_navigation->add($node);
-                $this->recursion($flat_navigation, $subdir, $path . '_' . $subdir['dirname'], $node, $indent + 1);
+                $this->recursion($flat_navigation, $subdir, $path . '/' . $subdir['dirname'], $node, $indent + 1);
             }
         }
         foreach ($tree['files'] as $name => $file) {

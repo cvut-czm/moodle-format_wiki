@@ -26,31 +26,30 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once('../../../config.php');
-require_once('vendor/autoload.php');
+require('../../../config.php');
 
-$id = required_param('id',PARAM_INT);
-$history=\format_wiki\entity\format_wiki_history::get($id);
+$args=explode('/',required_param('path',PARAM_RAW));
+$id=required_param('id',PARAM_INT);
+$context=context_course::instance($id);
 
-$dms= new \DiffMatchPatch\DiffMatchPatch();
-$patch=$dms->patch_fromText($history->patch);
-$new=$history->get_page_entity()->get_file()->get_content();
-$old=$history->get_content();
-$context=context_course::instance($history->get_page_entity()->courseid);
+require_login($id, true);
+if (!has_capability('moodle/course:view', $context)) {
+    return false;
+}
+$filename = array_pop($args); // The last item in the $args array.
+if (!$args) {
+    $filepath = '/'; // $args is empty => the path is '/'
+} else {
+    $filepath = '/'.implode('/', $args).'/'; // $args contains elements of the filepath
+}
 
+// Retrieve the file from the Files API.
+$fs = get_file_storage();
+$file = $fs->get_file($context->id, 'format_wiki', 'media', 0, $filepath, $filename);
+if (!$file) {
+    return false; // The file does not exist.
+}
 
-$pageurl = new moodle_url('/course/format/wiki/diff_compare.php', ['id' => $id]);
-$PAGE->set_url($pageurl);
-$PAGE->set_context($context);
-$PAGE->set_title("{$SITE->shortname}");
-$PAGE->set_heading(get_string('title:diff_compare','format_wiki'));
-$output = $PAGE->get_renderer('format_wiki');
-
-$data=[];
-$data['date_old']=gmdate('Y-m-d H:i:s',$history->timecreated);
-$data['old']=$dms->diff_prettyHtml($dms->diff_main($old,$new));
-$data['new']=str_replace("\n",'¶<br/>',$new);
-
-echo $output->header();
-echo $output->render_from_template('format_wiki/diff_compare',$data);
-echo $output->footer();
+// We can now send the file back to the browser - in this case with a cache lifetime of 1 day and no filtering.
+// From Moodle 2.3, use send_stored_file instead.
+send_file($file, $filename, 0, false, []);

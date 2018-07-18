@@ -1,7 +1,9 @@
 {
   "require": {
     "jelix/wikirenderer": "dev-master",
-    "splitbrain/php-archive": "*"
+    "splitbrain/php-archive": "*",
+    "diff/diff": "~3.0",
+    "yetanotherape/diff-match-patch": "v1.0.1"
   },
   "autoload": {
     "psr-4": {

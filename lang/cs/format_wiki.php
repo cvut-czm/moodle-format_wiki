@@ -34,6 +34,27 @@ $string['delete_old_wiki'] = 'Smazat starou wiki';
 
 $string['create:page'] = 'Vytvořit stránku';
 $string['create:folder'] = 'Založit složku';
+$string['please_wait_generation']= 'Prosím počkejte. Probíhá generace náhledu...';
+$string['pagenotexist_header']='Stránka s tímto názvem ještě neexistuje';
+$string['pagenotexist_text']='Odkaz vás zavedl na stránku, která ještě neexistuje. Můžete ji vytvořit stisknutím tlačítka Vytvořit stránku. ';
+$string['pagecreate']='Vytvořit';
+$string['revisions']='Historie';
+
+$string['display:compare']='Porovnat s současnou verzí.';
+$string['version_from']='Verze z';
+$string['version_actual']='Aktuální verze';
+$string['return']='Návrat';
+$string['rollback']='Rollback';
+
+
+$string['title:diff_compare']='Porovnání verzí';
+$string['title:pagenotexist']='Stránka s tímto názvem ještě neexistuje';
+$string['title:revisions']='Historie stránky';
+$string['title:edit']='Editace stránky';
+$string['title:patchfile']='Patch soubor';
+
+$string['wysiwyg:bold']='Tučné';
+$string['wysiwyg:bold:tooltip']='Převede označený text na tučný';
 
 $string['wiki:lectures'] = 'Přednášky';
 $string['wiki:labs'] = 'Laboratoře';

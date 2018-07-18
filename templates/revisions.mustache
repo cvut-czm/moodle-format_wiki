@@ -1,0 +1,30 @@
+<table class="table">
+    <tr>
+        <th>#</th>
+        <th>{{#str}}date{{/str}}</th>
+        <th>{{#str}}user{{/str}}</th>
+        <th>{{#str}}actions{{/str}}</th>
+
+    </tr>
+    {{#revisions}}
+        <tr>
+            <td>{{id}}</td>
+            <td>{{date}}</td>
+            <td>{{user}}</td>
+            <td>
+                {{#link_compare}}
+                    <a href="{{.}}" class="btn btn-outline-success btn-sm">{{#str}}display:compare,format_wiki{{/str}}</a>
+                {{/link_compare}}
+                {{#link_patchfile}}
+                    <a href="{{.}}" class="btn btn-outline-primary btn-sm">{{#str}}display:patch,format_wiki{{/str}}</a>
+                {{/link_patchfile}}
+                {{#link_display}}
+                <a href="{{.}}" class="btn btn-outline-primary btn-sm">{{#str}}display:display,format_wiki{{/str}}</a>
+                {{/link_display}}
+                {{#link_rollback}}
+                <a href="{{.}}" class="btn btn-outline-danger btn-sm">{{#str}}display:rollback,format_wiki{{/str}}</a>
+                {{/link_rollback}}
+            </td>
+        </tr>
+    {{/revisions}}
+</table>

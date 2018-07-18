@@ -1,0 +1,7 @@
+classification
+harmonogram
+harmonogram-test
+team
+news
+av
+wiki
