@@ -62,5 +62,9 @@ if ($file === false) {
     echo '</div>';
     // call render() method: it will parse DokuWiki syntax, and will
     // generate HTML content
-    echo $wr->render($file->get_content());
+
+    $course = course_get_format($course)->get_course();
+    $renderer = $PAGE->get_renderer('format_wiki');
+    $entity=\format_wiki\entity\format_wiki_section_mapping::create_or_get($course->id,$page);
+    echo $renderer->print_wiki_page($wr->render($file->get_content()),$course,null,null,null,null,$entity->sectionid);
 }

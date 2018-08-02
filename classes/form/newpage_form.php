@@ -26,10 +26,23 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace format_wiki\output;
+namespace format_wiki\form;
 
 defined('MOODLE_INTERNAL') || die();
 
-class renderer  extends \plugin_renderer_base {
+global $CFG;
+require_once($CFG->libdir . '/formslib.php');
 
+class newpage_form extends \moodleform {
+
+    /**
+     * Form definition. Abstract method - always override!
+     */
+    protected function definition() {
+        $f=$this->_form;
+        $f->addElement('text','pageurl',get_string('newpage_url', 'format_wiki'));
+        $f->setType('pageurl',PARAM_PATH);
+        $f->addElement('static','info','',get_string('newpage_help','format_wiki'));
+        $this->add_action_buttons(false,get_string('create'));
+    }
 }

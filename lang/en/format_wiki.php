@@ -55,7 +55,10 @@ $string['title:pagenotexist'] = 'This topic does not exist yet';
 $string['title:revisions'] = 'Page revisions';
 $string['title:edit'] = 'Page edit';
 $string['title:patchfile'] = 'Patch file';
+$string['title:newpage']='New page';
 
+$string['newpage_url']='Page url';
+$string['newpage_help']='Help';
 
 $string['wiki:lectures'] = 'Lectures';
 $string['wiki:labs'] = 'Labs';

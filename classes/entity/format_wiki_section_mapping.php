@@ -56,8 +56,9 @@ class format_wiki_section_mapping extends database_entity {
     public static function create_or_get(int $course,string $page) : format_wiki_section_mapping
     {
         $entity=format_wiki_section_mapping::get(['courseid'=>$course,'page'=>$page]);
-        if($entity!=null)
+        if($entity!=null) {
             return $entity;
+        }
         $entity=new format_wiki_section_mapping();
         $entity->courseid=$course;
         $entity->page=$page;

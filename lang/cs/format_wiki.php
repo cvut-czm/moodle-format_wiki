@@ -52,9 +52,14 @@ $string['title:pagenotexist']='Stránka s tímto názvem ještě neexistuje';
 $string['title:revisions']='Historie stránky';
 $string['title:edit']='Editace stránky';
 $string['title:patchfile']='Patch soubor';
+$string['title:newpage']='Nová stránka';
+
 
 $string['wysiwyg:bold']='Tučné';
 $string['wysiwyg:bold:tooltip']='Převede označený text na tučný';
+
+$string['newpage_url']='Url stránky';
+$string['newpage_help']='<ul><li>Zadejte prosím celou cestu stránky</li><li>Například: <code><pre>/testing/test</pre></code></li><li>Text je převeden na lower-case</li></ul>';
 
 $string['wiki:lectures'] = 'Přednášky';
 $string['wiki:labs'] = 'Laboratoře';

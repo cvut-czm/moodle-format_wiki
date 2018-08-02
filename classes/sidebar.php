@@ -63,7 +63,7 @@ class sidebar {
 
     private function iterate_folder(flat_navigation $flat, array $folder, \flat_navigation_node $parent = null, int $indent = 0,
             $add = true) {
-        if (in_array($folder['dirname'], config::get_ignored_folders())) {
+        if (in_array($folder['dirname'], config::get_ignored_folders()) || count($folder['files']) === 0 && count($folder['subdirs']) === 0) {
             return; // Skipping
         }
 

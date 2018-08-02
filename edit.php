@@ -43,7 +43,9 @@ if (isset($_POST['wikipage'])) {
     $wikipage = $_POST['wikipage'];
     $wikipage = str_replace("\r\n", "\n", $wikipage);
     if ($wikipage == '') {
-        if($file!==false)$file->delete();
+        if ($file !== false) {
+            $file->delete();
+        }
     } else {
         if ($file !== false) {
             $fs = $file->get_content();
@@ -64,33 +66,39 @@ if (isset($_POST['wikipage'])) {
                 $name = $file->get_filename();
                 $path = $file->get_filepath();
                 $file->delete();
-            }
-            else
-            {
-                $parts=explode('/',$page);
-                $name = array_pop($parts).'.txt'; // The last item in the $args array.
+            } else {
+                $parts = explode('/', $page);
+                $name = array_pop($parts) . '.txt'; // The last item in the $args array.
                 if (!$parts) {
                     $path = '/'; // $args is empty => the path is '/'
                 } else {
-                    $path = implode('/', $parts).'/'; // $args contains elements of the filepath
+                    $path = implode('/', $parts) . '/'; // $args contains elements of the filepath
                 }
             }
             $fs = get_file_storage();
-            $fs->create_file_from_string(
-                    [
-                            'contextid' => $context->id,
-                            'component' => 'format_wiki',
-                            'filearea' => 'pages',
-                            'itemid' => 0,
-                            'filepath' => $path,
-                            'filename' => $name,
-                            'timecreated' => time(),
-                            'timemodified' => time()
-                    ],
-                    $wikipage
-            );
+            if (strlen($wikipage) == 0) {
+                $file = $fs->get_file($context->id, 'format_wiki', 'pages', 0, $path, $name);
+                if ($file) {
+                    $file->delete();
+                }
+                redirect(new moodle_url('/course/view.php', ['id' => $id]));die();
+            } else {
+                $fs->create_file_from_string(
+                        [
+                                'contextid' => $context->id,
+                                'component' => 'format_wiki',
+                                'filearea' => 'pages',
+                                'itemid' => 0,
+                                'filepath' => $path,
+                                'filename' => $name,
+                                'timecreated' => time(),
+                                'timemodified' => time()
+                        ],
+                        $wikipage
+                );
+            }
         }
-        redirect(new moodle_url('/course/view.php', ['id' => $id, 'page' => $page]));
+        redirect(new moodle_url('/course/view.php', ['id' => $id, 'page' => $page]));die();
     }
 }
 
@@ -98,13 +106,13 @@ $pageurl = new moodle_url('/course/format/wiki/edit.php', ['id' => $id, 'page' =
 $PAGE->set_url($pageurl);
 $PAGE->set_context($context);
 $PAGE->set_title("{$SITE->shortname}");
-$PAGE->set_heading(get_string('title:edit','format_wiki'));
+$PAGE->set_heading(get_string('title:edit', 'format_wiki'));
 $output = $PAGE->get_renderer('format_wiki');
 
-
 echo $output->header();
-$data = $file===false?'':$file->get_content();
-$wysiwyg=\format_wiki\wysiwyg::create_default('wikipage',$data);
-echo $output->render_from_template('format_wiki/edit', ['page' => $wysiwyg->render(), 'page_url' => $page, 'id' => $id, 'url' => $pageurl]);
+$data = $file === false ? '' : $file->get_content();
+$wysiwyg = \format_wiki\wysiwyg::create_default('wikipage', $data);
+echo $output->render_from_template('format_wiki/edit',
+        ['page' => $wysiwyg->render(), 'page_url' => $page, 'id' => $id, 'url' => $pageurl]);
 
 echo $output->footer();

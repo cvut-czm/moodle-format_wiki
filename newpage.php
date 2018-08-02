@@ -25,32 +25,49 @@
  * @copyright  2018 CVUT CZM, Jiri Fryc
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 require_once('../../../config.php');
 require_once('vendor/autoload.php');
 
+$id = required_param('id', PARAM_INT);
+$context = context_course::instance($id);
 
-$id = required_param('id',PARAM_INT);
-$history=\format_wiki\entity\format_wiki_history::get($id);
-
-$dms= new \DiffMatchPatch\DiffMatchPatch();
-$patch=$dms->patch_fromText($history->patch);
-$new=$history->get_page_entity()->get_file()->get_content();
-$old=$history->get_content();
-$context=context_course::instance($history->get_page_entity()->courseid);
-
-
-$pageurl = new moodle_url('/course/format/wiki/diff_compare.php', ['id' => $id]);
+$pageurl = new moodle_url('/course/format/wiki/newpage.php', ['id' => $id]);
 $PAGE->set_url($pageurl);
 $PAGE->set_context($context);
 $PAGE->set_title("{$SITE->shortname}");
-$PAGE->set_heading(get_string('title:diff_compare','format_wiki'));
+$PAGE->set_heading(get_string('title:newpage', 'format_wiki'));
 $output = $PAGE->get_renderer('format_wiki');
 
-$data=[];
-$data['date_old']=gmdate('Y-m-d H:i:s',$history->timecreated);
-$data['old']=$dms->diff_prettyHtml($dms->diff_main($old,$new));
-$data['new']=str_replace("\n",'¶<br/>',$new);
+$form = new \format_wiki\form\newpage_form($pageurl);
+if($form->is_submitted() && $form->is_validated())
+{
+    $data=$form->get_data();
+    $url=$data->pageurl;
+    $url=str_replace('\\','/',$url);
+    $url=strtolower($url);
+    if($url[0]!='/')
+        $url='/'.$url;
+    if(strrpos($url,'/')==strlen($url)-1)
+        $url.='start';
+    $url.='.txt';
+
+    $fs=get_file_storage();
+    $path=substr($url,0,strrpos($url,'/')+1);
+    $name=substr($url,strrpos($url,'/')+1);
+    $fs->create_file_from_string([
+            'contextid' => $context->id,
+            'component' => 'format_wiki',
+            'filearea' => 'pages',
+            'itemid' => 0,
+            'filepath' => $path,
+            'filename' => $name,
+            'timecreated' => time(),
+            'timemodified' => time()
+    ], '======'.substr($name,0,-4).'======');
+
+}
 
 echo $output->header();
-echo $output->render_from_template('format_wiki/diff_compare',$data);
+$form->display();
 echo $output->footer();

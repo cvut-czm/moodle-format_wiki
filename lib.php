@@ -51,7 +51,7 @@ class format_wiki extends format_base {
         $createfolder = get_string('create:folder', 'format_wiki');
 
         $header =
-                new flat_navigation_node(self::flatnavnode_builder($this->course->shortname, $this->course->shortname, 'coursename',
+                new flat_navigation_node(self::flatnavnode_builder($this->get_course()->shortname, $this->get_course()->shortname, 'coursename',
                         null, null,
                         new pix_icon('i/course', '')), 0);
         $header->type = 'header';

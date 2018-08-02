@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<XMLDB PATH="format/wiki/db" VERSION="20120122" COMMENT="XMLDB file for Moodle mod/assignment"
+<XMLDB PATH="course/format/wiki/db" VERSION="20120122" COMMENT="XMLDB file for Moodle mod/assignment"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="../../../../lib/xmldb/xmldb.xsd"
 >
     <TABLES>
-        <TABLE NAME="format_wiki_section_mapping">
+        <TABLE NAME="format_wiki_section_mapping" COMMENT="DDD">
             <FIELDS>
                 <FIELD NAME="id" SEQUENCE="true" LENGTH="10" TYPE="int" NOTNULL="true"/>
                 <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Course id"/>
