@@ -21,6 +21,8 @@ class Title extends \WikiRenderer\Block {
     protected $regexp = "/^\s*(\=+)\s*([^=]+)\s*(\=+)\s*$/";
     protected $_closeNow = true;
 
+    public static $last_title = null;
+
     public function validateLine() {
         $level = strlen($this->_detectMatch[1]);
         $h = 6 - $level + $this->engine->getConfig()->startHeaderNumber;
@@ -31,6 +33,10 @@ class Title extends \WikiRenderer\Block {
         }
         $this->generator->setLevel($h);
         $title = trim($this->_detectMatch[2]);
-        $this->generator->addLine($this->parseInlineContent($title));
+        if ($h == 1 && self::$last_title === null) {
+            self::$last_title = $title;
+        } else {
+            $this->generator->addLine($this->parseInlineContent($title));
+        }
     }
 }

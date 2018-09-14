@@ -28,38 +28,39 @@
 
 $string['pluginname'] = 'Wiki formát';
 $string['pagefile'] = 'Soubory stránek';
-$string['mediafile'] = 'Média soubory';
+$string['mediafile'] = 'Média';
 $string['overwrite_files'] = 'Přepsat soubory';
 $string['delete_old_wiki'] = 'Smazat starou wiki';
 
 $string['create:page'] = 'Vytvořit stránku';
 $string['create:folder'] = 'Založit složku';
-$string['please_wait_generation']= 'Prosím počkejte. Probíhá generace náhledu...';
-$string['pagenotexist_header']='Stránka s tímto názvem ještě neexistuje';
-$string['pagenotexist_text']='Odkaz vás zavedl na stránku, která ještě neexistuje. Můžete ji vytvořit stisknutím tlačítka Vytvořit stránku. ';
-$string['pagecreate']='Vytvořit';
-$string['revisions']='Historie';
+$string['please_wait_generation'] = 'Prosím počkejte. Probíhá generace náhledu...';
+$string['pagenotexist_header'] = 'Stránka s tímto názvem ještě neexistuje';
+$string['pagenotexist_text'] =
+        'Odkaz vás zavedl na stránku, která ještě neexistuje. Můžete ji vytvořit stisknutím tlačítka Vytvořit stránku. ';
+$string['pagecreate'] = 'Vytvořit';
+$string['revisions'] = 'Historie';
 
-$string['display:compare']='Porovnat s současnou verzí.';
-$string['version_from']='Verze z';
-$string['version_actual']='Aktuální verze';
-$string['return']='Návrat';
-$string['rollback']='Rollback';
+$string['display:compare'] = 'Porovnat s současnou verzí.';
+$string['version_from'] = 'Verze z';
+$string['version_actual'] = 'Aktuální verze';
+$string['return'] = 'Návrat';
+$string['rollback'] = 'Rollback';
 
+$string['title:diff_compare'] = 'Porovnání verzí';
+$string['title:pagenotexist'] = 'Stránka s tímto názvem ještě neexistuje';
+$string['title:revisions'] = 'Historie stránky';
+$string['title:edit'] = 'Editace stránky';
+$string['title:patchfile'] = 'Patch soubor';
+$string['title:newpage'] = 'Nová stránka';
+$string['title:medialist'] = 'Seznam médií';
 
-$string['title:diff_compare']='Porovnání verzí';
-$string['title:pagenotexist']='Stránka s tímto názvem ještě neexistuje';
-$string['title:revisions']='Historie stránky';
-$string['title:edit']='Editace stránky';
-$string['title:patchfile']='Patch soubor';
-$string['title:newpage']='Nová stránka';
+$string['wysiwyg:bold'] = 'Tučné';
+$string['wysiwyg:bold:tooltip'] = 'Převede označený text na tučný';
 
-
-$string['wysiwyg:bold']='Tučné';
-$string['wysiwyg:bold:tooltip']='Převede označený text na tučný';
-
-$string['newpage_url']='Url stránky';
-$string['newpage_help']='<ul><li>Zadejte prosím celou cestu stránky</li><li>Například: <code><pre>/testing/test</pre></code></li><li>Text je převeden na lower-case</li></ul>';
+$string['newpage_url'] = 'Url stránky';
+$string['newpage_help'] =
+        '<ul><li>Zadejte prosím celou cestu stránky</li><li>Například: <code><pre>/testing/test</pre></code></li><li>Text je převeden na lower-case</li></ul>';
 
 $string['wiki:lectures'] = 'Přednášky';
 $string['wiki:labs'] = 'Laboratoře';
@@ -79,3 +80,9 @@ $string['wiki:start'] = 'Index';
 $string['wiki:funding'] = 'Dotace';
 $string['wiki:playground'] = 'Pískoviště';
 
+$string['table:file']='Soubor';
+$string['table:attributes']='Attributy';
+$string['table:actions']='Akce';
+$string['table:created']='Vytvořeno';
+$string['table:size']='Velikost souboru';
+$string['table:modified']='Poslední změna';

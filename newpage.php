@@ -40,21 +40,22 @@ $PAGE->set_heading(get_string('title:newpage', 'format_wiki'));
 $output = $PAGE->get_renderer('format_wiki');
 
 $form = new \format_wiki\form\newpage_form($pageurl);
-if($form->is_submitted() && $form->is_validated())
-{
-    $data=$form->get_data();
-    $url=$data->pageurl;
-    $url=str_replace('\\','/',$url);
-    $url=strtolower($url);
-    if($url[0]!='/')
-        $url='/'.$url;
-    if(strrpos($url,'/')==strlen($url)-1)
-        $url.='start';
-    $url.='.txt';
+if ($form->is_submitted() && $form->is_validated()) {
+    $data = $form->get_data();
+    $url = $data->pageurl;
+    $url = str_replace('\\', '/', $url);
+    $url = strtolower($url);
+    if ($url[0] != '/') {
+        $url = '/' . $url;
+    }
+    if (strrpos($url, '/') == strlen($url) - 1) {
+        $url .= 'start';
+    }
+    $url .= '.txt';
 
-    $fs=get_file_storage();
-    $path=substr($url,0,strrpos($url,'/')+1);
-    $name=substr($url,strrpos($url,'/')+1);
+    $fs = get_file_storage();
+    $path = substr($url, 0, strrpos($url, '/') + 1);
+    $name = substr($url, strrpos($url, '/') + 1);
     $fs->create_file_from_string([
             'contextid' => $context->id,
             'component' => 'format_wiki',
@@ -64,7 +65,7 @@ if($form->is_submitted() && $form->is_validated())
             'filename' => $name,
             'timecreated' => time(),
             'timemodified' => time()
-    ], '======'.substr($name,0,-4).'======');
+    ], '======' . substr($name, 0, -4) . '======');
 
 }
 

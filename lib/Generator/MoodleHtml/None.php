@@ -26,20 +26,35 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once('../../../config.php');
-require_once('vendor/autoload.php');
+namespace Generator\MoodleHtml;
 
-$id = required_param('id', PARAM_INT);
-$history = \format_wiki\entity\format_wiki_history::get($id);
+use WikiRenderer\Generator\InlineGeneratorInterface;
 
-$context = context_course::instance($history->get_page_entity()->courseid);
-$pageurl = new moodle_url('/course/format/wiki/patchfile.php', ['id' => $id]);
-$PAGE->set_url($pageurl);
-$PAGE->set_context($context);
-$PAGE->set_title("{$SITE->shortname}");
-$PAGE->set_heading(get_string('title:patchfile', 'format_wiki'));
-$output = $PAGE->get_renderer('format_wiki');
+defined('MOODLE_INTERNAL') || die();
 
-echo $output->header();
-echo $output->render_from_template('format_wiki/patchfile', ['file' => str_replace("\n", "<br/>", $history->patch)]);
-echo $output->footer();
+class None implements \WikiRenderer\Generator\BlockParagraphInterface {
+
+
+    public function setId($id) {
+    }
+
+    public function addLine($content) {
+    }
+
+    public function __construct(\WikiRenderer\Generator\Config $config) {
+    }
+
+    /**
+     * says if it has no content.
+     */
+    public function isEmpty() {
+        return false;
+    }
+
+    /**
+     * @return string
+     */
+    public function generate() {
+        return '';
+    }
+}

@@ -28,6 +28,9 @@
 
 namespace Markup\Edux;
 
+use format_wiki\wiki_url;
+use local_cool\crsbld\link_fixer;
+
 defined('MOODLE_INTERNAL') || die();
 
 class MediaLink extends \WikiRenderer\InlineTagWithSeparator {
@@ -41,13 +44,35 @@ class MediaLink extends \WikiRenderer\InlineTagWithSeparator {
     public function getContent() {
         $cntattr = count($this->attribute);
         $cnt = ($this->separatorCount + 1 > $cntattr) ? $cntattr : ($this->separatorCount + 1);
-        list($href, $label) = $this->config->getLinkProcessor()->processMediaLink($this->wikiContentArr[0], $this->generatorName);
+
+        $t=$this->wikiContentArr[0].$this->wikiContentArr[1];
+        if(strpos($t,'tsort')>0 || strpos($t,'msort')>0 || strpos($t,'indexmenu')>0) {
+            $this->generator=$this->documentGenerator->getInlineGenerator('hidden');
+            return $this->generator;
+        }
+        $p=strpos($this->wikiContentArr[0],'?');
+        if($p>0)
+            $this->wikiContentArr[0]=substr($this->wikiContentArr[0],0,$p);
+        $url=wiki_url::from_media_link($this->wikiContentArr[0]);
+        list($href, $label) = $this->config->getLinkProcessor()->processMediaLink(':'.$this->wikiContentArr[0], $this->generatorName);
         $this->wikiContentArr[0] = $href;
+
 
         if ($cnt == 2) {
             ++$this->separatorCount;
             $this->wikiContentArr[1] = '';
             $this->generator->setRawContent($label);
+        }
+        $s=strpos($href,'?');
+        $s=$s===false?0:$s;
+        if (in_array(substr($href,strrpos($href,'.')+1,$s), ['jpg','png','svg','gif','bmp'])) {
+            $this->generator = $this->documentGenerator->getInlineGenerator('image');
+            $url=$url->get_resource();
+            if($url!==false)
+                $this->generator->setAttribute('src', (new link_fixer(wiki_url::get_current_context()))->read_image_to_base64($url));
+            else
+                $this->generator->setAttribute('src', $href);
+            return $this->generator;
         }
 
         return parent::getContent();

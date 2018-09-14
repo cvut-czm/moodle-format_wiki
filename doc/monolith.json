@@ -1,0 +1,32 @@
+{
+  "name": "Wiki formát kurzu",
+  "category": "Moodle - Course format",
+  "short_description": "Moodle plugin",
+  "license": "GPLv3",
+  "authors": [
+    "CZM",
+    "Jiří Fryč",
+    "Aleš Gorecki"
+  ],
+  "email": "moodle@fel.cvut.cz",
+  "issues": "https://helpdesk.cvut.cz/projects/FEL_MOODLE/summary",
+  "from": "2017",
+  "tags": [
+    "php",
+    "moodle"
+  ],
+  "namespaces": [
+    "format_wiki"
+  ],
+  "files": {
+    "include": [
+      "classes"
+    ],
+    "extensions": [
+      "php"
+    ]
+  },
+  "versions": [
+    "1.0"
+  ]
+}

@@ -26,20 +26,26 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once('../../../config.php');
-require_once('vendor/autoload.php');
+require('../../../config.php');
 
-$id = required_param('id', PARAM_INT);
-$history = \format_wiki\entity\format_wiki_history::get($id);
+$args=explode('/',required_param('path',PARAM_RAW));
+$id=required_param('id',PARAM_INT);
+$context=context_course::instance($id);
 
-$context = context_course::instance($history->get_page_entity()->courseid);
-$pageurl = new moodle_url('/course/format/wiki/patchfile.php', ['id' => $id]);
-$PAGE->set_url($pageurl);
-$PAGE->set_context($context);
-$PAGE->set_title("{$SITE->shortname}");
-$PAGE->set_heading(get_string('title:patchfile', 'format_wiki'));
-$output = $PAGE->get_renderer('format_wiki');
+require_login($id, true);
+require_capability('local/kos:load_course_data',$context);
 
-echo $output->header();
-echo $output->render_from_template('format_wiki/patchfile', ['file' => str_replace("\n", "<br/>", $history->patch)]);
-echo $output->footer();
+$filename = array_pop($args); // The last item in the $args array.
+if (!$args) {
+    $filepath = '/'; // $args is empty => the path is '/'
+} else {
+    $filepath = '/'.implode('/', $args).'/'; // $args contains elements of the filepath
+}
+
+// Retrieve the file from the Files API.
+$fs = get_file_storage();
+$file = $fs->get_file($context->id, 'format_wiki', 'media', 0, $filepath, $filename);
+if ($file) {
+    $file->delete();
+}
+redirect(new moodle_url('/course/format/wiki/media_list.php',['id'=>$id]));

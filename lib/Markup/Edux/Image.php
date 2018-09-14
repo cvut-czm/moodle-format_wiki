@@ -12,6 +12,8 @@
  */
 
 namespace Markup\Edux;
+use format_wiki\wiki_url;
+use local_cool\crsbld\link_fixer;
 
 /**
  * Parser for an image inline tag.
@@ -32,6 +34,11 @@ class Image extends \WikiRenderer\InlineTagWithSeparator {
         } else {
             $href = $contents[0];
             $title = $contents[1];
+        }
+        $t=$href.$title;
+        if(strpos($t,'tsort')>0 || strpos($t,'msort')>0 || strpos($t,'indexmenu')>0) {
+            $this->generator=$this->documentGenerator->getInlineGenerator('hidden');
+            return $this->generator;
         }
 
         $align = '';
@@ -60,7 +67,8 @@ class Image extends \WikiRenderer\InlineTagWithSeparator {
                 }
             }
         }
-        list($href, $label) = $this->config->getLinkProcessor()->processLink($href, $this->name);
+        $g=$href;
+        list($href, $label) = $this->config->getLinkProcessor()->processMediaLink($href, $this->name);
         if ($linkonly) {
             $this->generator = $this->documentGenerator->getInlineGenerator('link');
             $this->generator->setAttribute('href', $href);
@@ -89,6 +97,24 @@ class Image extends \WikiRenderer\InlineTagWithSeparator {
                     $this->generator = $this->documentGenerator->getInlineGenerator('flash');
                     $type = 3;
                     break;
+                case 'jpg':
+                case 'png':
+                case 'bmp':
+                case 'gif':
+                    $wiki = wiki_url::from_media_link($g);
+                    $res=$wiki->get_resource();
+                    if($res===false)
+                        break;
+                    $this->generator = $this->documentGenerator->getInlineGenerator('image');
+                    $this->generator->setAttribute('src', (new link_fixer(wiki_url::get_current_context()))->read_image_to_base64($res));
+                    return $this->generator;
+                    break;
+                default:
+                    $this->generator = $this->documentGenerator->getInlineGenerator('link');
+                    $this->generator->setAttribute('href', $href);
+                    $this->generator->setRawContent(($title ?: $label));
+
+                    return $this->generator;
             }
         }
 

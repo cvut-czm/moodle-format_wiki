@@ -23,6 +23,6 @@ class Code extends \WikiRenderer\InlineTag {
     protected $endTag = '\'\'';
 
     public function isOtherTagAllowed() {
-        return false;
+        return true;
     }
 }

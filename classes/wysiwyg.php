@@ -43,7 +43,7 @@ class wysiwyg {
         return $new;
     }
 
-    protected static function gen_js_oval(string $name, string $code, string $code2 = null,string $text='TEXT'): string {
+    protected static function gen_js_oval(string $name, string $code, string $code2 = null, string $text = 'TEXT') : string {
         if ($code2 === null) {
             $code2 = $code;
         }
@@ -53,7 +53,7 @@ class wysiwyg {
                         var caretPos = $txt[0].selectionStart;' . PHP_EOL . '
                         var caretEnd = $txt[0].selectionEnd;' . PHP_EOL . '
                         var textAreaTxt = $txt.val();' . PHP_EOL . '
-                        var txtToAdd = (caretPos==caretEnd?\''.$text.'\':textAreaTxt.substring(caretPos,caretEnd));' . PHP_EOL . '
+                        var txtToAdd = (caretPos==caretEnd?\'' . $text . '\':textAreaTxt.substring(caretPos,caretEnd));' . PHP_EOL . '
                         $txt.val(textAreaTxt.substring(0, caretPos) + "' . $code . '" + txtToAdd+ "' . $code2 .
                 '" + textAreaTxt.substring(caretEnd));' . PHP_EOL . '
                         $txt.focus();
@@ -73,9 +73,8 @@ class wysiwyg {
                 get_string('wysiwyg:strikethrough:tooltip', 'format_wiki'));
 
         $this->add_function('externallink', get_string('wysiwyg:externallink', 'format_wiki'), 'globe',
-                self::gen_js_oval('wysiwyg_externallink', '[[', ']]','http://example.com|External Link'),
+                self::gen_js_oval('wysiwyg_externallink', '[[', ']]', 'http://example.com|External Link'),
                 get_string('wysiwyg:externallink:tooltip', 'format_wiki'));
-
 
         $this->add_function('unorderedlist', get_string('wysiwyg:unorderedlist', 'format_wiki'), 'list-ul',
                 self::gen_js_oval('wysiwyg_unorderedlist', '  * ', ''),
@@ -85,7 +84,7 @@ class wysiwyg {
                 get_string('wysiwyg:orderedlist:tooltip', 'format_wiki'));
 
         $this->add_function('horizontal', get_string('wysiwyg:horizontal', 'format_wiki'), 'ellipsis-h',
-                self::gen_js_oval('wysiwyg_horizontal', "\\n----\\n", '',''),
+                self::gen_js_oval('wysiwyg_horizontal', "\\n----\\n", '', ''),
                 get_string('wysiwyg:horizontal:tooltip', 'format_wiki'));
     }
 
@@ -99,7 +98,7 @@ class wysiwyg {
      * @return $this Fluent API
      */
     public function add_function(string $id, string $translated_string, string $icon, string $javascript, string $tooltip = null,
-            callable $callback = null): wysiwyg {
+            callable $callback = null) : wysiwyg {
         $this->functions[] = ['id' => $id, 'text' => $translated_string, 'icon' => $icon, 'js' => $javascript,
                 'callback' => $callback, 'tooltip' => $tooltip];
         return $this;
@@ -109,18 +108,18 @@ class wysiwyg {
     private $id;
     private $name;
 
-    public function set_content(string $content): wysiwyg {
+    public function set_content(string $content) : wysiwyg {
         $this->content = $content;
         return $this;
     }
 
-    public function set_name(string $name): wysiwyg {
+    public function set_name(string $name) : wysiwyg {
         $this->name = $name;
         $this->id = $name . '_input';
         return $this;
     }
 
-    public function render(): string {
+    public function render() : string {
         $out = $this->render_buttons();
         $out .= '<textarea class="form-control" id="' . $this->id . '" name="' . $this->name . '" rows="20">' . $this->content .
                 '</textarea>';
@@ -130,7 +129,7 @@ class wysiwyg {
         return $out;
     }
 
-    public function render_buttons(): string {
+    public function render_buttons() : string {
         $out = '<div class="btn-group mt-2 mb-2" role="group">';
         foreach ($this->functions as $fnc) {
             $tooltip = '';
@@ -145,7 +144,7 @@ class wysiwyg {
         return $out;
     }
 
-    public function render_javascript(): string {
+    public function render_javascript() : string {
         $out = '';
         foreach ($this->functions as $fnc) {
             $out .= PHP_EOL . $fnc['js'];

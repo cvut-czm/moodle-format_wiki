@@ -32,22 +32,21 @@ require_once('vendor/autoload.php');
 $id = required_param('id', PARAM_INT);
 
 $PAGE->set_pagelayout('admin');
+$PAGE->set_context(context_course::instance($id));
 $url = new moodle_url('/course/format/wiki/import.php', ['id' => $id]);
 $PAGE->set_url($url);
 require_login();
 
 $editform = new \format_wiki\form\import_form($url);
 if ($editform->is_submitted() && $editform->is_validated()) {
-    $context = context_course::instance($id);
     $data = $editform->get_submitted_data();
+    $context = context_course::instance($id);
     $porter = new \format_wiki\porter();
     $porter->set_context($context);
     $porter->set_pages($editform->save_temp_file('pagefile'));
     $porter->set_media($editform->save_temp_file('mediafile'));
-    if (isset($data->deleteoldwiki)) {
-        $porter->delete_old();
-    }
-    $porter->port(isset($data->overwrite))->cleanup();
+    $porter->delete_old();
+    $porter->port(true);
 }
 
 $PAGE->set_title('Import');

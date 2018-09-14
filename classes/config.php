@@ -32,34 +32,30 @@ defined('MOODLE_INTERNAL') || die();
 
 class config {
 
-    private static $ignored_folders=null;
-    private static $ignored_pages=null;
-    private static $teacher_folders=null;
+    private static $ignored_folders = null;
+    private static $ignored_pages = null;
+    private static $teacher_folders = null;
 
-    public static function get_ignored_folders() : array
-    {
+    public static function get_ignored_folders() : array {
         global $CFG;
-        if(self::$ignored_folders==null)
-        {
-            self::$ignored_folders=file($CFG->dirroot.'/course/format/wiki/cfg/ignored_folders.txt',FILE_IGNORE_NEW_LINES);
+        if (self::$ignored_folders == null) {
+            self::$ignored_folders = file($CFG->dirroot . '/course/format/wiki/cfg/ignored_folders.txt', FILE_IGNORE_NEW_LINES);
         }
         return self::$ignored_folders;
     }
-    public static function get_ignored_pages() : array
-    {
+
+    public static function get_ignored_pages() : array {
         global $CFG;
-        if(self::$ignored_pages==null)
-        {
-            self::$ignored_pages=file($CFG->dirroot.'/course/format/wiki/cfg/ignored_pages.txt');
+        if (self::$ignored_pages == null) {
+            self::$ignored_pages = file($CFG->dirroot . '/course/format/wiki/cfg/ignored_pages.txt');
         }
         return self::$ignored_pages;
     }
-    public static function get_teacher_folders() : array
-    {
+
+    public static function get_teacher_folders() : array {
         global $CFG;
-        if(self::$teacher_folders==null)
-        {
-            self::$teacher_folders=file($CFG->dirroot.'/course/format/wiki/cfg/teacher_folders.txt');
+        if (self::$teacher_folders == null) {
+            self::$teacher_folders = file($CFG->dirroot . '/course/format/wiki/cfg/teacher_folders.txt');
         }
         return self::$teacher_folders;
     }

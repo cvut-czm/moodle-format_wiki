@@ -31,9 +31,9 @@ require_once('../../../config.php');
 
 $id = required_param('id', PARAM_INT);
 $page = optional_param('page', 'start', PARAM_RAW);
-$text = required_param('text',PARAM_RAW);
+$text = required_param('text', PARAM_RAW);
 
-$context=context_course::instance($id);
+$context = context_course::instance($id);
 \format_wiki\wiki_url::set_current_context($context);
 \format_wiki\wiki_url::set_current_page($page);
 $markupConfig = new  Markup\Edux\Config($context, (new moodle_url('/course/view.php', ['id' => $id])) . '&page=%s');

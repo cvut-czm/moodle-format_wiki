@@ -13,6 +13,8 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+use theme_ctufeet\navigation\course\course_activities_module;
+use theme_ctufeet\navigation\course\course_nav_module;
 
 /**
  * This is a one-line short description of the file.
@@ -28,7 +30,7 @@
 class format_wiki extends format_base {
 
     static function flatnavnode_builder(string $text, string $shorttext, string $key, $action = null, $parent = null, $icon = null,
-            string $type = null): array {
+            string $type = null) : array {
         $data = ['text' => $text, 'shorttext' => $shorttext, 'action' => $action, 'icon' => $icon, 'type' => $type, 'key' => $key,
                 'parent' => $parent];
         foreach ($data as $k => $v) {
@@ -45,22 +47,31 @@ class format_wiki extends format_base {
      * We have custom flatnav rendering, that allow us better control.
      *
      */
-    public function extend_flat_navigation(flat_navigation $flat_navigation) {
+    public function extend_flat_navigation(course_nav_module $flat_navigation) {
+        global $PAGE;
         $courseid = $this->courseid;
         $createpage = get_string('create:page', 'format_wiki');
         $createfolder = get_string('create:folder', 'format_wiki');
 
+        $filter=new \filter_multilang($PAGE->context,[]);
+        $name=$filter->filter($this->get_course()->shortname);
         $header =
-                new flat_navigation_node(self::flatnavnode_builder($this->get_course()->shortname, $this->get_course()->shortname, 'coursename',
+                new flat_navigation_node(self::flatnavnode_builder($name, $name,
+                        'coursename',
                         null, null,
                         new pix_icon('i/course', '')), 0);
         $header->type = 'header';
-        $flat_navigation->add($header);
+        $header->set_showdivider(true);
+        $flat_navigation->nav->add($header);
+
+        $module=new course_activities_module($flat_navigation->nav);
+        $module->set_media_location('format_wiki','media',0);
+        $module->apply();
         //        $this->walk_tree_structure($flat_navigation); DEPRECATED
-        $sidebar=new \format_wiki\sidebar($courseid,-1);
-        $sidebar->set_current_page(optional_param('page','/start',PARAM_RAW));
-        $sidebar->generate_to($flat_navigation);
-        $flat_navigation->add(new flat_navigation_node(self::flatnavnode_builder($createpage, $createpage, 'wiki_create_page',
+        $sidebar = new \format_wiki\sidebar($courseid, -1);
+        $sidebar->set_current_page(optional_param('page', '/start', PARAM_RAW));
+        $sidebar->generate_to($flat_navigation->nav);
+        $flat_navigation->nav->add(new flat_navigation_node(self::flatnavnode_builder($createpage, $createpage, 'wiki_create_page',
                 new moodle_url('/course/format/wiki/newpage.php', ['id' => $courseid]), null, new pix_icon('t/add', '')), 1));
 
     }
@@ -81,7 +92,8 @@ class format_wiki extends format_base {
                 $name;
         $node = new flat_navigation_node(self::flatnavnode_builder(
                 $trans, $trans, 'wiki_page/' . $path . '/' . $name,
-                (new moodle_url('/course/view.php', ['id' => $PAGE->course->id])).'&page='.$path . '/' . $name, $parent), $indent);
+                (new moodle_url('/course/view.php', ['id' => $PAGE->course->id])) . '&page=' . $path . '/' . $name, $parent),
+                $indent);
         $node->hidden = $hidden;
         return $node;
     }

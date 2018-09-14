@@ -140,6 +140,7 @@ class WikiList extends \WikiRenderer\Block {
                 $generator = $this->_createList($type);
                 $generator->addContentToItem($this->parseInlineContent($this->_detectMatch[3]));
                 $last = $this->generatorStack[count($this->generatorStack) - 1];
+                if($last!=null)
                 $last->addContentToItem($generator);
                 $this->generatorStack[] = $generator;
 
@@ -151,6 +152,7 @@ class WikiList extends \WikiRenderer\Block {
             $generator->addContentToItem($this->parseInlineContent($this->_detectMatch[3]));
 
             $last = $this->generatorStack[count($this->generatorStack) - 1];
+            if($last!=null)
             $last->addContentToItem($generator);
             $this->generatorStack[] = $generator;
             $this->indentStack[] = array(strlen($this->_detectMatch[1]), $type);
@@ -166,6 +168,7 @@ class WikiList extends \WikiRenderer\Block {
                 $generator = $this->_createList($type);
                 $generator->addContentToItem($this->parseInlineContent($this->_detectMatch[3]));
                 $last = $this->generatorStack[count($this->generatorStack) - 1];
+                if($last!=null)
                 $last->addContentToItem($generator);
                 $this->generatorStack[] = $generator;
 

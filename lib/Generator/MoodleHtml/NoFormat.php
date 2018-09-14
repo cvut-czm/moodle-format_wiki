@@ -36,6 +36,9 @@ class NoFormat implements \WikiRenderer\Generator\InlineRawWordsInterface {
     public function isEmpty() {
         return count($this->content) == 0;
     }
+    public function getChildGenerators() {
+        return $this->content;
+    }
 
     /**
      * @return string

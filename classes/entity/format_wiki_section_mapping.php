@@ -33,7 +33,7 @@ use local_cool\entity\database_entity;
 
 defined('MOODLE_INTERNAL') || die();
 global $CFG;
-require_once($CFG->dirroot.'/course/lib.php');
+require_once($CFG->dirroot . '/course/lib.php');
 
 class format_wiki_section_mapping extends database_entity {
     public const TABLENAME = 'format_wiki_section_mapping';
@@ -43,27 +43,25 @@ class format_wiki_section_mapping extends database_entity {
     public $sectionid;
     public $page;
 
-    public function get_file() : \stored_file
-    {
-        $fs=get_file_storage();
-        $index=strrpos($this->page,'/');
-        $folder=substr($this->page,0,$index+1);
-        $file=substr($this->page,$index+1).'.txt';
-        return $fs->get_file(\context_course::instance($this->courseid)->id,'format_wiki','pages',0
-        ,$folder,$file);
+    public function get_file() : \stored_file {
+        $fs = get_file_storage();
+        $index = strrpos($this->page, '/');
+        $folder = substr($this->page, 0, $index + 1);
+        $file = substr($this->page, $index + 1) . '.txt';
+        return $fs->get_file(\context_course::instance($this->courseid)->id, 'format_wiki', 'pages', 0
+                , $folder, $file);
     }
 
-    public static function create_or_get(int $course,string $page) : format_wiki_section_mapping
-    {
-        $entity=format_wiki_section_mapping::get(['courseid'=>$course,'page'=>$page]);
-        if($entity!=null) {
+    public static function create_or_get(int $course, string $page) : format_wiki_section_mapping {
+        $entity = format_wiki_section_mapping::get(['courseid' => $course, 'page' => $page]);
+        if ($entity != null) {
             return $entity;
         }
-        $entity=new format_wiki_section_mapping();
-        $entity->courseid=$course;
-        $entity->page=$page;
-        $section=course_create_section($course);
-        $entity->sectionid=$section->id;
+        $entity = new format_wiki_section_mapping();
+        $entity->courseid = $course;
+        $entity->page = $page;
+        $section = course_create_section($course);
+        $entity->sectionid = $section->id;
         $entity->save();
         return $entity;
     }

@@ -27,21 +27,22 @@
  */
 
 require 'vendor/autoload.php';
+
 class format_wiki_external extends external_api {
     public static function parse_parameters() {
         return new external_function_parameters([
                 'markup_type' => new external_value(PARAM_ALPHANUMEXT, 'Type of markup'),
-                'id' => new external_value(PARAM_INT,'Course id'),
-                'page'=> new external_value(PARAM_RAW,'Path'),
+                'id' => new external_value(PARAM_INT, 'Course id'),
+                'page' => new external_value(PARAM_RAW, 'Path'),
                 'text' => new external_value(PARAM_RAW, 'Markup input')
         ]);
     }
 
-    public static function parse($markup_type, $id,$page, $text) {
+    public static function parse($markup_type, $id, $page, $text) {
         $params = self::validate_parameters(self::parse_parameters(),
-                ['markup_type' => $markup_type, 'text' => $text,'id'=>$id,'page'=>$page]);
+                ['markup_type' => $markup_type, 'text' => $text, 'id' => $id, 'page' => $page]);
 
-        $context=context_course::instance_by_id($id);
+        $context = context_course::instance_by_id($id);
         \format_wiki\wiki_url::set_current_context($context);
         \format_wiki\wiki_url::set_current_page($page);
         $markupConfig = new  Markup\Edux\Config($context, (new moodle_url('/course/view.php', ['id' => $id])) . '&page=%s');

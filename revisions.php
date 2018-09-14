@@ -40,7 +40,7 @@ require_login();
 $pageurl = new moodle_url('/course/format/wiki/revisions.php', ['id' => $id, 'page' => $page]);
 $PAGE->set_url($pageurl);
 $PAGE->set_context($context);
-$PAGE->set_heading(get_string('title:revisions','format_wiki'));
+$PAGE->set_heading(get_string('title:revisions', 'format_wiki'));
 $PAGE->set_title("{$SITE->shortname}");
 $output = $PAGE->get_renderer('format_wiki');
 
@@ -61,10 +61,10 @@ $data['revisions'][] = ['id' => 'current', 'date' => gmdate("Y-m-d H:i:s", $h[$i
 $i++;
 foreach ($histories as $history) {
     $data['revisions'][] = //TODO: XSS protection
-            [       'link_patchfile' => new moodle_url('/course/format/wiki/patchfile.php', ['id' => $history->id]),
-                    'link_display'=> new moodle_url('/course/view.php',['id'=>$id,'page'=>$page]),
-                    'link_rollback' => new moodle_url('/course/format/wiki/rollback.php',['id'=>$history->id]),
-                    'link_compare' => new moodle_url('/course/format/wiki/diff_compare.php',['id'=>$history->id]),
+            ['link_patchfile' => new moodle_url('/course/format/wiki/patchfile.php', ['id' => $history->id]),
+                    'link_display' => new moodle_url('/course/view.php', ['id' => $id, 'page' => $page]),
+                    'link_rollback' => new moodle_url('/course/format/wiki/rollback.php', ['id' => $history->id]),
+                    'link_compare' => new moodle_url('/course/format/wiki/diff_compare.php', ['id' => $history->id]),
                     'id' => $history->id,
                     'date' => gmdate("Y-m-d H:i:s", $h[$i][0]),
                     'user' => ((is_int($h[$i][1])) ? \local_cool\entity\user::get($h[$i][1])->get_username() : $h[$i][1])];

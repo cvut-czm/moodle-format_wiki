@@ -81,7 +81,8 @@ if (isset($_POST['wikipage'])) {
                 if ($file) {
                     $file->delete();
                 }
-                redirect(new moodle_url('/course/view.php', ['id' => $id]));die();
+                redirect(new moodle_url('/course/view.php', ['id' => $id]));
+                die();
             } else {
                 $fs->create_file_from_string(
                         [
@@ -98,7 +99,8 @@ if (isset($_POST['wikipage'])) {
                 );
             }
         }
-        redirect(new moodle_url('/course/view.php', ['id' => $id, 'page' => $page]));die();
+        redirect(new moodle_url('/course/view.php', ['id' => $id, 'page' => $page]));
+        die();
     }
 }
 

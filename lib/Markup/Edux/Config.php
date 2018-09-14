@@ -12,6 +12,7 @@
  */
 
 namespace Markup\Edux;
+use local_cool\crsbld\link_fixer;
 
 /**
  * Configuration for the WikiRenderer parser for Dokuwiki markup.
@@ -44,15 +45,17 @@ class Config extends \WikiRenderer\Config {
                     '\Markup\Edux\Underline',
                     '\Markup\Edux\Code',
                     '\Markup\Edux\MediaLink',
-                    '\Markup\Edux\Link',
                     '\Markup\Edux\Image',
+                    '\Markup\Edux\Link',
                     '\Markup\Edux\NoWikiInline',
                     '\Markup\Edux\Footnote',
             ),
     );
     /** List of block parsers. */
     public $blocktags = array(
+            '\Markup\Edux\Note',
             '\Markup\Edux\Title',
+            '\Markup\Edux\Comment',
             '\Markup\Edux\WikiList',
             '\Markup\Edux\Blockquote',
             '\Markup\Edux\Table',
@@ -82,9 +85,8 @@ class Config extends \WikiRenderer\Config {
      */
     public $macros = array();
 
-    public function __construct(\context_course $context, $wikiBaseUrl = '', $appBaseUrl = '/') {
-        $wikiBaseUrl = $wikiBaseUrl ?: '/wiki/%s';
-        $this->linkProcessor = new LinkProcessor($context, $wikiBaseUrl, $appBaseUrl);
+    public function __construct(\context_course $context, link_fixer $fixer) {
+        $this->linkProcessor = new LinkProcessor($context, $fixer);
         $this->wordConverters[] = new \WikiRenderer\WordConverter\URLConverter($this->linkProcessor);
         $this->simpleTags[] = new LineBreak();
         $this->simpleTags[] = new \WikiRenderer\SimpleTag\Arrows();

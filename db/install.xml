@@ -9,7 +9,7 @@
                 <FIELD NAME="id" SEQUENCE="true" LENGTH="10" TYPE="int" NOTNULL="true"/>
                 <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Course id"/>
                 <FIELD NAME="sectionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Section id"/>
-                <FIELD NAME="page" TYPE="char" LENGTH="512" NOTNULL="true" SEQUENCE="false" COMMENT="Page url" />
+                <FIELD NAME="page" TYPE="char" LENGTH="512" NOTNULL="true" SEQUENCE="false" COMMENT="Page url"/>
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

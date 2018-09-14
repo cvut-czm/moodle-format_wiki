@@ -28,29 +28,27 @@
 require_once('../../../config.php');
 require_once('vendor/autoload.php');
 
+$id = required_param('id', PARAM_INT);
+$history = \format_wiki\entity\format_wiki_history::get($id);
 
-$id = required_param('id',PARAM_INT);
-$history=\format_wiki\entity\format_wiki_history::get($id);
-
-$dms= new \DiffMatchPatch\DiffMatchPatch();
-$patch=$dms->patch_fromText($history->patch);
-$new=$history->get_page_entity()->get_file()->get_content();
-$old=$history->get_content();
-$context=context_course::instance($history->get_page_entity()->courseid);
-
+$dms = new \DiffMatchPatch\DiffMatchPatch();
+$patch = $dms->patch_fromText($history->patch);
+$new = $history->get_page_entity()->get_file()->get_content();
+$old = $history->get_content();
+$context = context_course::instance($history->get_page_entity()->courseid);
 
 $pageurl = new moodle_url('/course/format/wiki/diff_compare.php', ['id' => $id]);
 $PAGE->set_url($pageurl);
 $PAGE->set_context($context);
 $PAGE->set_title("{$SITE->shortname}");
-$PAGE->set_heading(get_string('title:diff_compare','format_wiki'));
+$PAGE->set_heading(get_string('title:diff_compare', 'format_wiki'));
 $output = $PAGE->get_renderer('format_wiki');
 
-$data=[];
-$data['date_old']=gmdate('Y-m-d H:i:s',$history->timecreated);
-$data['old']=$dms->diff_prettyHtml($dms->diff_main($old,$new));
-$data['new']=str_replace("\n",'¶<br/>',$new);
+$data = [];
+$data['date_old'] = gmdate('Y-m-d H:i:s', $history->timecreated);
+$data['old'] = $dms->diff_prettyHtml($dms->diff_main($old, $new));
+$data['new'] = str_replace("\n", '¶<br/>', $new);
 
 echo $output->header();
-echo $output->render_from_template('format_wiki/diff_compare',$data);
+echo $output->render_from_template('format_wiki/diff_compare', $data);
 echo $output->footer();

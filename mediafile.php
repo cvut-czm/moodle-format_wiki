@@ -33,9 +33,7 @@ $id=required_param('id',PARAM_INT);
 $context=context_course::instance($id);
 
 require_login($id, true);
-if (!has_capability('moodle/course:view', $context)) {
-    return false;
-}
+
 $filename = array_pop($args); // The last item in the $args array.
 if (!$args) {
     $filepath = '/'; // $args is empty => the path is '/'

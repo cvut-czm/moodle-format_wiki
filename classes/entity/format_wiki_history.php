@@ -52,16 +52,16 @@ class format_wiki_history extends database_entity {
             }
             return $a->timecreated > $b->timecreated ? -1 : 1;
         });
-        foreach($histories as $h)
-        {
-            $file=$dms->patch_apply($dms->patch_fromText($h->patch),$file)[0];
-            if($h->id===$this->id)
+        foreach ($histories as $h) {
+            $file = $dms->patch_apply($dms->patch_fromText($h->patch), $file)[0];
+            if ($h->id === $this->id) {
                 break;
+            }
         }
         return $file;
     }
 
-    public function get_page_entity(): format_wiki_section_mapping {
+    public function get_page_entity() : format_wiki_section_mapping {
         return format_wiki_section_mapping::get($this->pageid);
     }
 

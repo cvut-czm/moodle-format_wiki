@@ -35,22 +35,15 @@ $fs = get_file_storage();
 
 \format_wiki\wiki_url::set_current_context($context);
 \format_wiki\wiki_url::set_current_page($page);
-$file = \format_wiki\wiki_url::from_moodle_url( $page)->get_resource();
+$file = \format_wiki\wiki_url::from_moodle_url($page)->get_resource();
 if ($file === false) {
     global $PAGE;
     $renderer = $PAGE->get_renderer('format_wiki');
-    echo $renderer->render_from_template('format_wiki/pagenotexist',[]);
+    echo $renderer->render_from_template('format_wiki/pagenotexist', []);
 } else {
 
     $markupConfig = new  Markup\Edux\Config($context, (new moodle_url('/course/view.php', ['id' => $id])) . '&page=%s');
-
-    // then choose a generator, e.g., the object which generates
-    // the result text in the expected format. Here, HTML...
-    $genConfig = new \Generator\MoodleHtml\Config();
-
-    $generator = new \Generator\MoodleHtml\Document($genConfig);
-
-    // now instancy the WikiRenderer engine
+    $generator = new \Generator\MoodleHtml\Document(new \Generator\MoodleHtml\Config());
     $wr = new \WikiRenderer\Renderer($generator, $markupConfig);
 
     echo '<div class="d-flex flex-row-reverse">';
@@ -65,6 +58,6 @@ if ($file === false) {
 
     $course = course_get_format($course)->get_course();
     $renderer = $PAGE->get_renderer('format_wiki');
-    $entity=\format_wiki\entity\format_wiki_section_mapping::create_or_get($course->id,$page);
-    echo $renderer->print_wiki_page($wr->render($file->get_content()),$course,null,null,null,null,$entity->sectionid);
+    $entity = \format_wiki\entity\format_wiki_section_mapping::create_or_get($course->id, $page);
+    echo $renderer->print_wiki_page($wr->render($file->get_content()), $course, null, null, null, null, $entity->sectionid);
 }

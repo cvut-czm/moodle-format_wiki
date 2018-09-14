@@ -40,7 +40,7 @@ class porter {
     private $temppage;
 
     /** @var string $tempmedia Temporary path to media tgz. */
-    private $tempmedia;
+    private $tempmedia=null;
 
     /**
      * Setter for context.
@@ -48,7 +48,7 @@ class porter {
      * @param \context_course $context
      * @return porter Return self. (Fluent API)
      */
-    public function set_context(\context_course $context): porter {
+    public function set_context(\context_course $context) : porter {
         $this->context = $context;
         return $this;
     }
@@ -59,7 +59,7 @@ class porter {
      * @param string $pathtofile
      * @return porter Return self. (Fluent API)
      */
-    public function set_pages(string $pathtofile): porter {
+    public function set_pages(string $pathtofile) : porter {
         $this->temppage = $pathtofile;
         return $this;
     }
@@ -70,7 +70,7 @@ class porter {
      * @param string $pathtofile
      * @return porter Return self. (Fluent API)
      */
-    public function set_media(string $pathtofile): porter {
+    public function set_media(string $pathtofile) : porter {
         $this->tempmedia = $pathtofile;
         return $this;
     }
@@ -80,7 +80,7 @@ class porter {
      *
      * @return porter Return self. (Fluent API)
      */
-    public function delete_old(): porter {
+    public function delete_old() : porter {
 
         $fs = get_file_storage();
         $fs->delete_area_files($this->context->id, 'format_wiki', 'wiki', 0);
@@ -94,13 +94,13 @@ class porter {
      *
      * @return porter Return self. (Fluent API)
      */
-    public function cleanup(): porter {
+    public function cleanup() : porter {
         unlink($this->temppage);
         unlink($this->tempmedia);
         return $this;
     }
-    static function rmdirr($dirname)
-    {
+
+    static function rmdirr($dirname) {
         if (!file_exists($dirname)) {
             return false;
         }
@@ -117,62 +117,89 @@ class porter {
         $dir->close();
         return rmdir($dirname);
     }
+
     /**
      * Port data from tgz.
      *
      * @param bool $overwrite If files should be overwriten.
      * @return porter Return self. (Fluent API)
      */
-    public function port(bool $overwrite): porter {
+    public function port(bool $overwrite,int $type=0) : porter {
         global $CFG;
-        $path = $CFG->tempdir . '/wiki/' . rand(0, 9999);
+        $path = $CFG->tempdir . '/wiki/' . rand(0, 9999).'/';
         mkdir($path, 0777, true);
         $tar = new Tar();
         $tar->open($this->temppage);
         $tar->extract($path);
+        if ($this->tempmedia !== null) {
         $tar = new Tar();
         $tar->open($this->tempmedia);
         $tar->extract($path);
+        }
         $coursecode = scandir($path)[2]; // Assuming valid notation, otherwise we catch exception above port function.
         $basepath = $path . '/' . $coursecode . '/data';
-
         $files = [];
-        $this->walk($basepath.'/pages', '', $files);
+        $this->walk($basepath . '/pages', '', $files);
 
         $fs = get_file_storage();
         foreach ($files as $file) {
-            $fullpath = $basepath.'/pages' . $file[0] . '/' . $file[1];
+            $pp=null;
+            switch ($type)
+            {
+                default:
+                case 0:
+                $pp=$file[0];
+                    break;
+                case 1:
+                    if(strpos($file[0],'/en')!==0 && strpos($file[0],'en')!==0)
+                        break;
+                    $pp=substr($file[0],strpos($file[0],'en')+2);
+                    break;
+                case 2:
+                    if(strpos($file[0],'/parttime')!==0 && strpos($file[0],'parttime')!==0)
+                        break;
+                    $pp=substr($file[0],strpos($file[0],'parttime')+8);
+                    break;
+            }
+            if($pp===null)
+                continue;
+            $fullpath = $basepath . '/pages' . $file[0] . '/' . $file[1];
             $fs->create_file_from_string([
                     'contextid' => $this->context->id,
                     'component' => 'format_wiki',
                     'filearea' => 'pages',
                     'itemid' => 0,
-                    'filepath' => $file[0] . '/',
+                    'filepath' => $pp . '/',
                     'filename' => $file[1],
                     'timecreated' => time(),
                     'timemodified' => time()
             ], file_get_contents($fullpath));
 
         }
-        $files = [];
-        $this->walk($basepath.'/media', '', $files);
 
-        $fs = get_file_storage();
-        foreach ($files as $file) {
-            $fullpath = $basepath.'/media' . $file[0] . '/' . $file[1];
-            $fs->create_file_from_string([
-                    'contextid' => $this->context->id,
-                    'component' => 'format_wiki',
-                    'filearea' => 'media',
-                    'itemid' => 0,
-                    'filepath' => $file[0] . '/',
-                    'filename' => $file[1],
-                    'timecreated' => time(),
-                    'timemodified' => time()
-            ], file_get_contents($fullpath));
+        if ($this->tempmedia !== null) {
+            $files = [];
+            $this->walk($basepath . '/media', '', $files);
 
+            $fs = get_file_storage();
+            foreach ($files as $file) {
+                if(strpos($file[0],'latex')===0 || strpos($file[0],'latex')===1)
+                    continue;
+                $fullpath = $basepath . '/media' . $file[0] . '/' . $file[1];
+                $fs->create_file_from_string([
+                        'contextid' => $this->context->id,
+                        'component' => 'format_wiki',
+                        'filearea' => 'media',
+                        'itemid' => 0,
+                        'filepath' => $file[0] . '/',
+                        'filename' => $file[1],
+                        'timecreated' => time(),
+                        'timemodified' => time()
+                ], file_get_contents($fullpath));
+
+            }
         }
-        self::rmdirr($basepath);
+        //TODO self::rmdirr($basepath);
         return $this;
     }
 
@@ -183,7 +210,7 @@ class porter {
      * @param string $currentpath Current path
      * @param string[][] $files Files in directories
      */
-    private function walk(string $basepath, string $currentpath, array &$files): void {
+    private function walk(string $basepath, string $currentpath, array &$files) : void {
         $path = $basepath . '/' . $currentpath;
         $directorycontent = scandir($path);
         foreach ($directorycontent as $content) {

@@ -34,23 +34,25 @@ defined('MOODLE_INTERNAL') || die();
 
 class revisions {
 
-    public static function is_changed(string $new,string $old) : bool
-    {
+    public static function is_changed(string $new, string $old) : bool {
         $dmp = new DiffMatchPatch();
         $diffs = $dmp->diff_main($new, $old);
-        foreach ($diffs as $diff)
-            if($diff[0]!==0)
+        foreach ($diffs as $diff) {
+            if ($diff[0] !== 0) {
                 return true;
+            }
+        }
         return false;
     }
-    public static function get_patch(string $old, string $new): string {
+
+    public static function get_patch(string $old, string $new) : string {
         $dmp = new DiffMatchPatch();
         $diffs = $dmp->diff_main($old, $new);
         $patches = $dmp->patch_make($diffs);
         return $dmp->patch_toText($patches);
     }
 
-    public static function apply_patch(string $new, string $patch): string {
+    public static function apply_patch(string $new, string $patch) : string {
         $dmp = new DiffMatchPatch();
         $patches = $dmp->patch_fromText($patch);
         return $dmp->patch_apply($patches, $new)[0];

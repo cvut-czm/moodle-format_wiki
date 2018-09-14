@@ -52,6 +52,8 @@ class Config extends \WikiRenderer\Generator\Config {
             'title' => '\Generator\MoodleHtml\Title',
             'list' => '\Generator\MoodleHtml\HtmlList',
             'noformat' => '\Generator\MoodleHtml\NoFormatBlock',
+            'none' => '\Generator\MoodleHtml\None',
+            'note' => '\Generator\MoodleHtml\Note',
             'pre' => '\Generator\MoodleHtml\Preformated',
             'syntaxhighlight' => '\Generator\MoodleHtml\SyntaxHighlighting',
             'blockquote' => '\Generator\MoodleHtml\BlockQuote',

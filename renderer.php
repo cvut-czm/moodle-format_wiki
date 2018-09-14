@@ -87,7 +87,7 @@ class format_wiki_renderer extends format_section_renderer_base {
 
         // Copy activity clipboard..
         echo $this->course_activity_clipboard($course, $displaysection);
-        $thissection =$sectioninfo;
+        $thissection = $sectioninfo;
         if ($thissection->summary or !empty($modinfo->sections[0]) or $PAGE->user_is_editing()) {
             echo $this->start_section_list();
             echo $this->section_header($thissection, $course, true, $displaysection);

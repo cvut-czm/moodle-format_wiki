@@ -51,30 +51,32 @@ class wiki_url {
     public static function set_current_context(\context $context) {
         self::$context = $context;
     }
+    public static function get_current_context() : \context_course {
+        return self::$context;
+    }
 
     public static function set_current_page(string $page) {
-        self::$page = substr($page, 0, strrpos($page, '/'));
+        self::$page = $page;
     }
 
     private $url;
     private $ismedia = false;
 
     private function __construct(string $page, bool $ismedia = false) {
-        if($page[0]!=='/')
-            $page='/'.$page;
         $this->url = $page;
         $this->ismedia = $ismedia;
     }
 
-    public static function from_moodle_url(string $page): wiki_url {
+    public static function from_moodle_url(string $page) : wiki_url {
         return new wiki_url($page);
     }
 
-    public static function from_wiki_link(string $link): wiki_url {
-        if (strpos($link, '.') !== 0) {
-            return new wiki_url(self::cleanup($link));
-        }
+    public static function from_wiki_link(string $link) : wiki_url {
         $prefix = self::$page;
+        if (strpos($link, '.') !== 0) {
+            $link= self::cleanup($link);
+            return new wiki_url(strpos($link,'/')===0?$link:($prefix . $link));
+        }
         while (strpos($link, '..:') === 0) {
             $prefix = substr($prefix, 0, strrpos($prefix, '/'));
             $link = substr($link, 3);
@@ -82,10 +84,11 @@ class wiki_url {
         if (strrpos($link, '.:') === 0) {
             $link = substr($link, 2);
         }
-        return new wiki_url($prefix . '/' . self::cleanup($link));
+        $link= self::cleanup($link);
+        return new wiki_url(strpos($link,'/')?$link:($prefix . $link));
     }
 
-    private static function cleanup(string $url): string {
+    private static function cleanup(string $url) : string {
         $url = str_replace(':', '/', $url);
         if (substr($url, -1) === '/') {
             $url .= 'start';
@@ -93,23 +96,23 @@ class wiki_url {
         return $url;
     }
 
-    public static function from_media_link(string $link): wiki_url {
+    public static function from_media_link(string $link) : wiki_url {
         $object = self::from_wiki_link($link);
         $object->ismedia = true;
         return $object;
     }
 
-    public function get_page(): string {
+    public function get_page() : string {
         return $this->url;
     }
 
-    public function is_media(): bool {
+    public function is_media() : bool {
         return $this->ismedia;
     }
 
     public function get_media_url() {
         if ($this->ismedia) {
-            return new \moodle_url('/course/format/wiki/mediafile.php',['id'=>self::$context->instanceid,'path'=>$this->url]);
+            return new \moodle_url('/course/format/wiki/mediafile.php', ['id' => self::$context->instanceid, 'path' => $this->url]);
         } else {
             return null;
         }
@@ -121,11 +124,12 @@ class wiki_url {
     public function get_resource() {
         $fs = get_file_storage();
         $index = strrpos($this->url, '/');
-        $folder = substr($this->url, 0, $index);
+        $folder = substr($this->url, 0, $index+1);
         $file = substr($this->url, $index + 1);
-        $tree=$fs->get_area_tree(self::$context->id,'format_wiki','pages',0);
+        $tree = $fs->get_area_tree(self::$context->id, 'format_wiki', 'pages', 0);
         if ($this->ismedia) {
-            return $fs->get_file(self::$context->id, 'format_wiki', 'media', 0, $folder, $file);
+            $file= $fs->get_file(self::$context->id, 'format_wiki', 'media', 0, $folder, $file);
+                        return $file;
         } else {
             return $fs->get_file(self::$context->id, 'format_wiki', 'pages', 0, $folder . '/', $file . '.txt');
         }

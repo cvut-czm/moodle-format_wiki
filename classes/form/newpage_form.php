@@ -39,10 +39,10 @@ class newpage_form extends \moodleform {
      * Form definition. Abstract method - always override!
      */
     protected function definition() {
-        $f=$this->_form;
-        $f->addElement('text','pageurl',get_string('newpage_url', 'format_wiki'));
-        $f->setType('pageurl',PARAM_PATH);
-        $f->addElement('static','info','',get_string('newpage_help','format_wiki'));
-        $this->add_action_buttons(false,get_string('create'));
+        $f = $this->_form;
+        $f->addElement('text', 'pageurl', get_string('newpage_url', 'format_wiki'));
+        $f->setType('pageurl', PARAM_PATH);
+        $f->addElement('static', 'info', '', get_string('newpage_help', 'format_wiki'));
+        $this->add_action_buttons(false, get_string('create'));
     }
 }

@@ -63,7 +63,8 @@ class sidebar {
 
     private function iterate_folder(flat_navigation $flat, array $folder, \flat_navigation_node $parent = null, int $indent = 0,
             $add = true) {
-        if (in_array($folder['dirname'], config::get_ignored_folders()) || count($folder['files']) === 0 && count($folder['subdirs']) === 0) {
+        if (in_array($folder['dirname'], config::get_ignored_folders()) ||
+                count($folder['files']) === 0 && count($folder['subdirs']) === 0) {
             return; // Skipping
         }
 
@@ -114,12 +115,12 @@ class sidebar {
 
     }
 
-    private function get_string(string $key): string {
+    private function get_string(string $key) : string {
         return get_string_manager()->string_exists('wiki:' . $key, 'format_wiki') ?
                 get_string('wiki:' . $key, 'format_wiki') : ucfirst($key);
     }
 
-    private function folder_to_nav(array $folder, \flat_navigation_node $parent = null, int $indent = 0): \flat_navigation_node {
+    private function folder_to_nav(array $folder, \flat_navigation_node $parent = null, int $indent = 0) : \flat_navigation_node {
         $text = $this->get_string($folder['dirname']);
         $data = ['text' => $text, 'shorttext' => $text,
                 'key' => ($parent == null ? '' : $parent->key) . '_' . $text];
@@ -130,12 +131,13 @@ class sidebar {
     }
 
     private function file_to_nav(\stored_file $file, \flat_navigation_node $parent = null, int $indent = 0,
-            $key = ''): \flat_navigation_node {
-        $text = $this->get_string(substr($file->get_filename(),0,-4));
+            $key = '') : \flat_navigation_node {
+        $text = $this->get_string(substr($file->get_filename(), 0, -4));
         $data = ['text' => $text, 'shorttext' => $text,
-                'key' => ($parent == null ? '' : $parent->key) . $key . '_' . $text.'--txt',
+                'key' => ($parent == null ? '' : $parent->key) . $key . '_' . $text . '--txt',
                 'action' => (new \moodle_url('/course/view.php',
-                        ['id' => $this->courseid, 'page' => $file->get_filepath() . substr($file->get_filename(),0,-4)]))->raw_out(false)];
+                        ['id' => $this->courseid,
+                                'page' => $file->get_filepath() . substr($file->get_filename(), 0, -4)]))->raw_out(false)];
 
         if ($parent != null) {
             $data['parent'] = $parent;

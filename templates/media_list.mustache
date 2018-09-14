@@ -1,0 +1,41 @@
+<script>
+    const copyToClipboard = str => {
+        const el = document.createElement('textarea');
+        el.value = str;
+        el.setAttribute('readonly', '');
+        el.style.position = 'absolute';
+        el.style.left = '-9999px';
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+    };
+</script>
+<table class="table table-fit">
+    <tr>
+        <th>{{#str}}table:file,format_wiki{{/str}}</th>
+        <th>{{#str}}table:created,format_wiki{{/str}}</th>
+        <th>{{#str}}table:modified,format_wiki{{/str}}</th>
+        <th>{{#str}}table:size,format_wiki{{/str}}</th>
+        <th>{{#str}}table:actions,format_wiki{{/str}}</th>
+    </tr>
+    {{#files}}
+        <tr>
+            <td colspan="5" class="bg-secondary"><h6>{{key}}</h6></td>
+        </tr>
+        {{#value}}
+            <tr>
+                <td class="text-info">{{name}}</td>
+                <td>{{created}}</td>
+                <td>{{modified}}</td>
+                <td>{{size}}</td>
+                <td>
+                    <a class="btn btn-outline-primary btn-sm" onclick="copyToClipboard('{{download}}')">Zkopírovat odkaz</a>
+                    <a class="btn btn-outline-success btn-sm" href="{{download}}">Zobrazit</a>
+                    <a class="btn btn-outline-warning btn-sm" href="{{edit}}">Přepsat</a>
+                    <a class="btn btn-outline-danger btn-sm" href="{{delete}}">Smazat</a>
+                </td>
+            </tr>
+        {{/value}}
+    {{/files}}
+</table>
