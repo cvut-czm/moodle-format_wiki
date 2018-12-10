@@ -17,7 +17,7 @@ foreach($files as $file)
     $path= substr($file,0,strrpos($file,'/')+1);
 
     try {
-        $data = \local_kos\kosapi\entities\course::fetchCourse($code, $context2, 'B181');
+        $data = \local_kos\api\kosapi\entities\course::fetchCourse($code, $context2, 'B181');
     }
     catch (Exception $e)
     {
